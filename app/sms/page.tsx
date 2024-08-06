@@ -11,12 +11,8 @@ const initialState = {
   error: undefined,
 };
 
-//페이지가 처음 render 되면, state.token의 값이 false가 된다.
-//이를 이용해서 input을 숨기는데 그걸 사용할 수 있다는 것을 의미함.
 export default function SMSLogin() {
   const [state, dispatch] = useFormState(smsLogin, initialState);
-  //두번째 인자 null -> initial state임
-  //initial state는 이 함수를 최초 호출할 때의 prevState의 값이 된다.
 
   return (
     <div className="flex flex-col gap-10 py-8 px-6">
