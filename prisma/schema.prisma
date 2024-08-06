@@ -20,4 +20,11 @@ model User {
   updated_at DateTime @updatedAt
 }
 
- 
+
+//SMSToken -> User 모델과 연결되고, SMS 인증을 위해 사용
+model SMSToken {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  token String @unique
+}
