@@ -7,39 +7,12 @@ import {
 import db from '@/lib/db';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
-import { getIronSession } from 'iron-session';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import getSession from '@/lib/session';
 
 const checkUsername = (username: string) => {
   return username.includes('potato') ? false : true;
 };
-
-const checkUniqueUsername = async (username: string) => {
-  const user = await db.user.findUnique({
-    where: {
-      username,
-    },
-    select: {
-      id: true,
-    },
-  });
-  return !Boolean(user);
-};
-
-const chenkUniqueEmail = async (email: string) => {
-  const user = await db.user.findUnique({
-    where: {
-      email,
-    },
-    select: {
-      id: true,
-    },
-  });
-  return !Boolean(user);
-};
-//우리는 문제가 발생했다면(email이 있다면), false를 return 하고 싶은 것임.
-//문제가 발생하지 않는다면(email이 없다면) -> true를 return 하고 싶은 것임.
 
 const checkPassword = ({
   password,
@@ -58,26 +31,56 @@ const formSchema = z
       })
       .trim()
       .toLowerCase()
-      .refine(
-        (username) => checkUniqueUsername(username),
-        'This username is already taken '
-      )
-      .refine((username) => checkUsername(username), 'No potato allowed'),
 
+      .refine((username) => checkUsername(username), 'No potato allowed'),
     email: z
       .string({
         invalid_type_error: 'Email must be a string!',
         required_error: 'Where is my email',
       })
       .email()
-      .toLowerCase()
-      .refine(
-        (email) => chenkUniqueEmail(email),
-        'There is an account already registered with that email'
-      ),
+      .toLowerCase(),
     password: z.string().min(PASSWORD_MIN_LENGTH, 'Way too short!'),
     // .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
     comfirmPassword: z.string().min(PASSWORD_MIN_LENGTH, 'Way too short!'),
+  })
+  .superRefine(async ({ username }, ctx) => {
+    const user = await db.user.findUnique({
+      where: {
+        username,
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (user) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'This username is already taken',
+        path: ['username'],
+        fatal: true,
+      });
+      return z.NEVER;
+    }
+  })
+  .superRefine(async ({ email }, ctx) => {
+    const user = await db.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (user) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'This email is already taken',
+        path: ['email'],
+        fatal: true,
+      });
+      return z.NEVER;
+    }
   })
   .refine(checkPassword, {
     message: 'Both passwords should be the same!',
@@ -111,16 +114,10 @@ export async function createAccount(prevState: any, formData: FormData) {
       },
     });
 
-    const session = await getIronSession(cookies(), {
-      cookieName: 'delicious -carrot',
-      password: process.env.COOKIE_PASSWORD!,
-    });
+    const session = await getSession();
 
-    //@ts-expect-error
     session.id = user.id;
     session.save();
     redirect('/profile');
   }
 }
-
-//사용자에게 쿠키를 전달하고 나면, 우리가 아무것도 하지 않아도 다음번ㄴ에 사용자 브라우저가 request를 보낼 때, 브라우저가 자동적으로 해당 쿠키를 서버로 보내게 된다.
