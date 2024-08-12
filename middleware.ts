@@ -11,6 +11,8 @@ const publicOnlyUrl: IRoutes = {
   '/login': true,
   '/create-account': true,
   '/sms': true,
+  '/github/start': true,
+  '/github/complete': true,
 };
 
 export async function middleware(request: NextRequest) {
@@ -22,7 +24,7 @@ export async function middleware(request: NextRequest) {
     }
   } else {
     if (exits) {
-      return Response.redirect(new URL('/home', request.url));
+      return Response.redirect(new URL('/profile', request.url));
     }
   }
 }
