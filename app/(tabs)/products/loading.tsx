@@ -18,5 +18,3 @@ export default function Loading() {
     </>
   );
 }
-
-//skeleton -> 로딩중일 때 보여주게 되는 component라고 생각하면ㄷ ㅚㄴ다.
