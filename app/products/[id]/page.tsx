@@ -4,7 +4,7 @@ import { formatToWon } from '@/lib/utils';
 import { UserIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 async function getIsOwner(userId: number) {
   const session = await getSession();
@@ -56,6 +56,8 @@ export default async function ProductDetail({
       },
       select: null,
     });
+
+    redirect('/products');
   };
   return (
     <>
