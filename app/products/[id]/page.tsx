@@ -47,6 +47,16 @@ export default async function ProductDetail({
     return notFound();
   }
   const isOwner = await getIsOwner(product.userId);
+
+  const onDelete = async () => {
+    'use server';
+    await db.product.delete({
+      where: {
+        id,
+      },
+      select: null,
+    });
+  };
   return (
     <>
       <div>
@@ -78,8 +88,15 @@ export default async function ProductDetail({
           <span className="font-semibold text-lg">
             {formatToWon(product.price)}원{' '}
           </span>
+          {isOwner ? (
+            <form action={onDelete}>
+              <button className="bg-neutral-700 px-5 py-2.5 rounded-md active:bg-neutral-800 font-semibold">
+                삭제하기
+              </button>
+            </form>
+          ) : null}
           <Link
-            className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold"
+            className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold active:bg-orange-400"
             href={``}
           >
             채팅하기
