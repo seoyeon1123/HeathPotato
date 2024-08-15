@@ -61,12 +61,18 @@ export default async function ProductDetail({
     <>
       <div>
         <div className="relative aspect-square">
-          <Image fill src={product.photo} alt={product.title} />
+          <Image
+            className="object-cover"
+            fill
+            src={product.photo}
+            alt={product.title}
+          />
         </div>
         <div className="p-5 flex items-center gap-3 border-b border-neutral-600">
           <div className="size-10 rounded-full">
             {product.user.avatar !== null ? (
               <Image
+                className="rounded-full"
                 src={product.user.avatar}
                 alt={product.title}
                 width={40}
