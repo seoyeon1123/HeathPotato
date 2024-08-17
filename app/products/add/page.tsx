@@ -4,9 +4,7 @@ import Button from '@/components/button';
 import Input from '@/components/input';
 import { PhotoIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
-import { useFormState } from 'react-dom';
 import { uploadProduct } from './actions';
-import { error } from 'console';
 
 export default function AddProduct() {
   const [preview, setPreview] = useState('');
