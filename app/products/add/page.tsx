@@ -6,6 +6,7 @@ import { PhotoIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { useFormState } from 'react-dom';
 import { uploadProduct } from './actions';
+import { error } from 'console';
 
 export default function AddProduct() {
   const [preview, setPreview] = useState('');
@@ -17,6 +18,21 @@ export default function AddProduct() {
       return;
     }
     const file = files[0];
+
+    if (!file.type.startsWith('image/')) {
+      return {
+        error: '이미지 파일만 업로드 가능합니다. ',
+      };
+    }
+
+    const fileSizeInMd = file.size / (1024 * 1024);
+
+    if (fileSizeInMd > 2) {
+      return {
+        error:
+          '이미지의 크기가 2MD를 초과하는 이미지는 업로드 할 수 없습니다. ',
+      };
+    }
     const url = URL.createObjectURL(file);
     setPreview(url);
   };
