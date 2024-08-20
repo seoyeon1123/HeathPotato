@@ -18,6 +18,3 @@ export const productSchema = z.object({
 });
 
 export type ProductType = z.infer<typeof productSchema>;
-
-//z.infer이란, Schema로부터 typescript에서 쓸 수 있는 type을 가져올 수 있도록 해줌 z.infer<typeof productSchema>
-//--> 즉, productSchema의 타입을 infer 가져온다! 그리고 ProductType에 저장한다! 라고 이해하면 된다 ! ㅋㅋ
