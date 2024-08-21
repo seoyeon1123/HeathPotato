@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
     }
   } else {
     if (exits) {
-      return Response.redirect(new URL('/products', request.url));
+      return Response.redirect(new URL('/home', request.url));
     }
   }
 }

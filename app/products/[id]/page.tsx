@@ -5,6 +5,7 @@ import { UserIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
+import { unstable_cache as nextCache, revalidateTag } from 'next/cache';
 
 async function getIsOwner(userId: number) {
   const session = await getSession();
@@ -16,6 +17,7 @@ async function getIsOwner(userId: number) {
 }
 
 async function getProduct(id: number) {
+  console.log('product');
   const product = db.product.findUnique({
     where: {
       id,
@@ -33,6 +35,34 @@ async function getProduct(id: number) {
   return product;
 }
 
+const getCachedProduct = nextCache(getProduct, ['product-detail'], {
+  tags: ['product-detail'],
+});
+
+async function getProductTitle(id: number) {
+  console.log('title');
+  const product = await db.product.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      title: true,
+    },
+  });
+  return product;
+}
+
+const getCachedProductTitle = nextCache(getProductTitle, ['product-title'], {
+  tags: ['product-title'],
+});
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const product = await getCachedProductTitle(Number(params.id));
+  return {
+    title: product?.title,
+  };
+}
+
 export default async function ProductDetail({
   params,
 }: {
@@ -42,7 +72,7 @@ export default async function ProductDetail({
   if (isNaN(id)) {
     return notFound();
   }
-  const product = await getProduct(id);
+  const product = await getCachedProduct(id);
   if (!product) {
     return notFound();
   }
@@ -57,7 +87,12 @@ export default async function ProductDetail({
       select: null,
     });
 
-    redirect('/products');
+    redirect('/home');
+  };
+
+  const revalidate = async () => {
+    'use server';
+    revalidateTag('product-title');
   };
   return (
     <>
@@ -101,9 +136,9 @@ export default async function ProductDetail({
             {formatToWon(product.price)}원{' '}
           </span>
           {isOwner ? (
-            <form action={onDelete}>
-              <button className="bg-neutral-700 px-5 py-2.5 rounded-md active:bg-neutral-800 font-semibold">
-                삭제하기
+            <form action={revalidate}>
+              <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
+                Revalidate title cache
               </button>
             </form>
           ) : null}
@@ -118,3 +153,6 @@ export default async function ProductDetail({
     </>
   );
 }
+
+//tags의 이름은 key와 일치하지 않아도 된다. 하지만, key의 이름은 유니크 해야 한다.
+//여러 cache들은 똑같은 tags를 공유할 수 있다. -> 유일하지 않아도 되며, 여러 태그를 가질 수 있으며 또한 우리의 애플리케이션의 여러 cache에서 공유될 수도 있음
