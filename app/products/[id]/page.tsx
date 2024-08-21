@@ -36,7 +36,7 @@ async function getProduct(id: number) {
 }
 
 const getCachedProduct = nextCache(getProduct, ['product-detail'], {
-  tags: ['product-detail'],
+  tags: ['product-detail', 'xxx'],
 });
 
 async function getProductTitle(id: number) {
@@ -53,7 +53,7 @@ async function getProductTitle(id: number) {
 }
 
 const getCachedProductTitle = nextCache(getProductTitle, ['product-title'], {
-  tags: ['product-title'],
+  tags: ['product-title', 'xxx'],
 });
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
@@ -92,7 +92,7 @@ export default async function ProductDetail({
 
   const revalidate = async () => {
     'use server';
-    revalidateTag('product-title');
+    revalidateTag('xxx');
   };
   return (
     <>
@@ -154,5 +154,9 @@ export default async function ProductDetail({
   );
 }
 
-//tags의 이름은 key와 일치하지 않아도 된다. 하지만, key의 이름은 유니크 해야 한다.
-//여러 cache들은 똑같은 tags를 공유할 수 있다. -> 유일하지 않아도 되며, 여러 태그를 가질 수 있으며 또한 우리의 애플리케이션의 여러 cache에서 공유될 수도 있음
+//두가지의 cache가 한 페이지에 존재하지만, 오로지 'product-title'만 새로고침이 되었고, 'product-detail'은 새로고침이 되지 않은 것을 확인할 수있다. --> tag로 인해 제어권이 생겼다.
+
+//경로를 기반으로 새로고침을 하면 그 경로의 모든 cache가 새로고침이 된다.
+//단, tag로 새로고침을 하면, 오직 이 태그를 가진 cache만 새로고침이 된다.
+
+//태그 하나가 여러 cache들을 새로고침할 수도 있음.
