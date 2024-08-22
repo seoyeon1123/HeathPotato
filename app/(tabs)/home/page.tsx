@@ -2,14 +2,22 @@ import ProductList from '@/components/product-list';
 import db from '@/lib/db';
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { Prisma } from '@prisma/client';
-import { unstable_cache as nextCache, revalidatePath } from 'next/cache';
+import {
+  unstable_cache as nextCache,
+  revalidatePath,
+  revalidateTag,
+} from 'next/cache';
 import Link from 'next/link';
 
-const getCachedProducts = nextCache(getInitialProducts, ['home-products']);
+const getCachedProducts = nextCache(getInitialProducts, ['home-products'], {
+  tags: ['products-page'],
+});
 
 export const metadata = {
   title: 'Home',
 };
+
+export const revalidate = 60;
 
 async function getInitialProducts() {
   console.log('hit');
@@ -34,16 +42,10 @@ export type InitialProducts = Prisma.PromiseReturnType<
 
 export default async function Products() {
   const initialProducts = await getCachedProducts();
-  const revalidate = async () => {
-    'use server';
-    revalidatePath('/home');
-  };
+
   return (
     <div>
       <ProductList initialProducts={initialProducts} />
-      <form action={revalidate}>
-        <button>Revalidate</button>
-      </form>
 
       <Link
         href="/products/add"

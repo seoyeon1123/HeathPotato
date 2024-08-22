@@ -6,6 +6,7 @@ import db from '@/lib/db';
 import getSession from '@/lib/session';
 import { redirect } from 'next/navigation';
 import { productSchema } from './schema';
+import { revalidateTag } from 'next/cache';
 
 export async function uploadProduct(prevState: any, formData: FormData) {
   const data = {
@@ -37,6 +38,7 @@ export async function uploadProduct(prevState: any, formData: FormData) {
           id: true,
         },
       });
+      revalidateTag('products-page');
       redirect(`/products/${product.id}`);
     }
   }

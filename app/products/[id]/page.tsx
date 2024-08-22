@@ -36,7 +36,7 @@ async function getProduct(id: number) {
 }
 
 const getCachedProduct = nextCache(getProduct, ['product-detail'], {
-  tags: ['product-detail', 'xxx'],
+  tags: ['product-detail'],
 });
 
 async function getProductTitle(id: number) {
@@ -53,7 +53,7 @@ async function getProductTitle(id: number) {
 }
 
 const getCachedProductTitle = nextCache(getProductTitle, ['product-title'], {
-  tags: ['product-title', 'xxx'],
+  tags: ['product-title'],
 });
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
@@ -86,14 +86,10 @@ export default async function ProductDetail({
       },
       select: null,
     });
-
+    revalidateTag('product-detail');
     redirect('/home');
   };
 
-  const revalidate = async () => {
-    'use server';
-    revalidateTag('xxx');
-  };
   return (
     <>
       <div>
@@ -136,9 +132,16 @@ export default async function ProductDetail({
             {formatToWon(product.price)}원{' '}
           </span>
           {isOwner ? (
-            <form action={revalidate}>
+            <form action={onDelete}>
               <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
-                Revalidate title cache
+                삭제하기
+              </button>
+            </form>
+          ) : null}
+          {isOwner ? (
+            <form action={onDelete}>
+              <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
+                삭제하기
               </button>
             </form>
           ) : null}
@@ -154,9 +157,18 @@ export default async function ProductDetail({
   );
 }
 
-//두가지의 cache가 한 페이지에 존재하지만, 오로지 'product-title'만 새로고침이 되었고, 'product-detail'은 새로고침이 되지 않은 것을 확인할 수있다. --> tag로 인해 제어권이 생겼다.
+export async function generateStaticParams() {
+  const products = await db.product.findMany({
+    select: {
+      id: true,
+    },
+  });
 
-//경로를 기반으로 새로고침을 하면 그 경로의 모든 cache가 새로고침이 된다.
-//단, tag로 새로고침을 하면, 오직 이 태그를 가진 cache만 새로고침이 된다.
+  return products.map((product) => {
+    return {
+      id: product.id + '',
+    };
+  });
+}
 
-//태그 하나가 여러 cache들을 새로고침할 수도 있음.
+export const dynamicParams = true;
