@@ -139,11 +139,12 @@ export default async function ProductDetail({
             </form>
           ) : null}
           {isOwner ? (
-            <form action={onDelete}>
-              <button className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold">
-                삭제하기
-              </button>
-            </form>
+            <Link
+              className="bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold"
+              href={`/products/${id}/edit`}
+            >
+              수정하기
+            </Link>
           ) : null}
           <Link
             className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold active:bg-orange-400"
