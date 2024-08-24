@@ -33,8 +33,10 @@ export default async function Modal({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="max-w-screen-sm flex justify-center items-center bg-black bg-opacity-60">
-      <div className="relative bg-white rounded-lg shadow-lg max-w-4xl w-full h-auto p-6">
+    <div className="fixed inset-0 flex justify-center items-start bg-black bg-opacity-60 z-50">
+      <div className="relative bg-white rounded-lg shadow-lg max-w-4xl w-full h-auto p-6 mt-20">
+        {' '}
+        {/* mt-20 to push the modal down from the top */}
         <CloseBtn />
         <h1 className="text-2xl font-bold text-gray-900 mb-4 border-b pb-2">
           상품 더보기
