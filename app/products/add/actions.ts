@@ -48,10 +48,9 @@ export async function getUploadUrl() {
   const response = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/images/v2/direct_upload`,
     {
-      method: 'POST',
+      method: 'post',
       headers: {
         Authorization: `Bearer ${process.env.CLOUDFLARE_TOKEN}`,
-        // 'Content-Type' 헤더는 제거했습니다
       },
     }
   );

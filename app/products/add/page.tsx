@@ -42,6 +42,7 @@ export default function AddProduct() {
       setUploadUrl(uploadURL);
       setPhotoId(id);
     }
+    console.log(result);
   };
 
   const interceptAction = async (prevState: any, formData: FormData) => {
@@ -52,7 +53,7 @@ export default function AddProduct() {
     const cloudflareForm = new FormData();
     cloudflareForm.append('file', file);
     const response = await fetch(uploadUrl, {
-      method: 'post',
+      method: 'POST',
       body: cloudflareForm,
     });
     console.log(await response.text());

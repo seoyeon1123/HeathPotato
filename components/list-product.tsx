@@ -21,6 +21,7 @@ export default function ListProduct({
       <div className="relative size-28 rounded-md overflow-hidden">
         <Image
           fill
+          priority
           src={`${photo}/avatar`}
           className="object-cover"
           alt={title}
