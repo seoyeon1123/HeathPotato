@@ -113,6 +113,7 @@ export default function EditForm({ product }: IEditProps) {
           className="mt-2"
         />
         <input type="hidden" name="id" value={product.id} />
+
         <Input
           name="title"
           required
