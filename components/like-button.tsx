@@ -46,9 +46,9 @@ export default function LikeButton({
         }`}
       >
         {state.isLiked ? (
-          <HandThumbUpIcon className="size-7" />
+          <HandThumbUpIcon className="size-5" />
         ) : (
-          <OutlineHandThumbUpIcon className="size-7" />
+          <OutlineHandThumbUpIcon className="size-5" />
         )}
         {state.isLiked ? (
           <span> {state.likeCount}</span>
