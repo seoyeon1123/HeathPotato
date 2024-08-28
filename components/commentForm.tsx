@@ -40,7 +40,7 @@ export default function CommentForm({ postId, userId }: ICommentFormProps) {
             </button>
           </div>
         </form>
-        <ListComment postId={postId} />
+        <ListComment postId={postId} userId={userId} />
       </div>
     </>
   );
