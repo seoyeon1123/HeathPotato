@@ -59,12 +59,7 @@ export default async function ListComment({ postId, userId }: IListProps) {
             <span>{formatToTimeAgo(comment.created_at.toString())}</span>
             {userId === comment.user.id && (
               <div className="flex gap-2 mt-2">
-                <EditComment
-                  payload={comment.payload}
-                  postId={postId}
-                  userId={userId}
-                  commentId={comment.id}
-                />
+                <EditComment payload={comment.payload} commentId={comment.id} />
                 <DeleteButton commentId={comment.id} />
               </div>
             )}
