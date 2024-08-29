@@ -1,72 +1,62 @@
-// components/ListComment.tsx
-import db from '@/lib/db';
-import EditComment from './EditComment';
+'use client';
+
 import { formatToTimeAgo } from '@/lib/utils';
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
-import DeleteCommentBtn from './deleteBtn'; // Import corrected
+import React from 'react';
+import EditComment from './EditComment';
+import DeleteCommentBtn from './deleteBtn';
 
-interface IListProps {
-  postId: number;
-  userId: number;
+interface Comment {
+  id: number;
+  payload: string;
+  created_at: Date;
+  user: {
+    username: string;
+    avatar: string | null;
+  };
 }
 
-async function getComments(postId: number) {
-  const comments = await db.comment.findMany({
-    where: { postId },
-    select: {
-      id: true,
-      payload: true,
-      created_at: true,
-      user: {
-        select: {
-          username: true,
-          avatar: true,
-          id: true,
-        },
-      },
-    },
-  });
-  return comments;
+interface ListCommentProps {
+  comments: Comment[];
 }
 
-export default async function ListComment({ postId, userId }: IListProps) {
-  const comments = await getComments(postId);
-
-  if (!comments) {
-    return notFound();
-  }
-
+export default function ListComment({ comments }: ListCommentProps) {
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-6 mt-6">
       {comments.map((comment) => (
         <div
           key={comment.id}
-          className="flex flex-row gap-4 p-4 border-b-2 border-orange-500 last:border-b-0"
+          className="relative flex flex-col gap-4 p-4 bg-neutral-800 rounded-lg shadow-md"
         >
-          <div className="flex-1">
-            <div className="flex items-center gap-3">
-              <Image
-                width={25}
-                height={25}
-                src={comment.user.avatar!}
-                alt={comment.user.username}
-                className="rounded-full"
-              />
-              <h1 className="font-semibold">{comment.user.username}</h1>
-            </div>
-            <p className="text-lg mt-2">{comment.payload}</p>
-            <span className="text-gray-500 block mt-1">
-              {formatToTimeAgo(comment.created_at.toString())}
-            </span>
+          {/* Delete button positioned in the top-right corner */}
+          <div className="absolute top-2 right-2">
+            <DeleteCommentBtn
+              commentId={comment.id}
+              // className="text-neutral-400 hover:text-white transition-colors"
+            />
           </div>
-          {userId === comment.user.id && (
-            <div className="flex flex-row items-baseline justify-between ">
+          <div className="flex items-start gap-4">
+            <Image
+              src={comment.user.avatar || '/default-avatar.png'}
+              alt={comment.user.username}
+              className="w-10 h-10 rounded-full"
+              width={40}
+              height={40}
+            />
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <p className="text-sm font-semibold text-white">
+                  {comment.user.username}
+                </p>
+                <span className="text-xs text-neutral-400">•</span>
+                <span className="text-xs text-neutral-400">
+                  {formatToTimeAgo(comment.created_at.toString())}
+                </span>
+              </div>
+              <p className="text-sm text-neutral-300 mb-2">{comment.payload}</p>
               <EditComment payload={comment.payload} commentId={comment.id} />
-
-              {/* <DeleteCommentBtn commentId={comment.id} /> */}
             </div>
-          )}
+          </div>
         </div>
       ))}
     </div>

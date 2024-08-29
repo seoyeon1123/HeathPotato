@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Input from './input';
 import { useFormState } from 'react-dom';
-import EditAction from '@/app/products/[id]/edit/actions';
 import updateCommentAction from '@/lib/commentActions';
 
 interface IEditCommentProps {
@@ -12,7 +11,7 @@ interface IEditCommentProps {
 export default function EditComment({ payload, commentId }: IEditCommentProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [newPayload, setNewPayload] = useState(payload);
-  const [error, setError] = useState<string | null>(null);
+  const [state, action] = useFormState(updateCommentAction, null);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -20,37 +19,51 @@ export default function EditComment({ payload, commentId }: IEditCommentProps) {
 
   const handleCancelClick = () => {
     setIsEditing(false);
-    setNewPayload(payload); // 원래의 payload로 복원
+    setNewPayload(payload); // Revert to original payload
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPayload(e.target.value);
   };
 
-  // useFormState를 사용하지 않고 직접 수정 처리
-  const [state, action] = useFormState(updateCommentAction, null);
   return (
-    <div>
-      <form
-        action={action}
-        className="flex flex-row gap-2 items-baseline justify-center"
-      >
-        <Input
-          name="payload"
-          type="text"
-          required
-          value={newPayload}
-          onChange={handleChange}
-          className="text-neutral-400 rounded-full text-sm"
-          errors={state?.fieldErrors.payload}
-        />
-        <input name="commentId" value={commentId} className="hidden" />
-        <div className="flex gap-2 mt-2">
-          <button className=" text-white px-4 py-2 text-sm rounded">
-            Save
-          </button>
-        </div>
-      </form>
+    <div className="mt-2">
+      {!isEditing ? (
+        <button
+          onClick={handleEditClick}
+          className="text-xs text-neutral-400 hover:text-white transition-colors"
+        >
+          Edit
+        </button>
+      ) : (
+        <form action={action} className="flex flex-col gap-2 mt-2">
+          <Input
+            name="payload"
+            type="text"
+            required
+            value={newPayload}
+            onChange={handleChange}
+            className="text-neutral-400 bg-neutral-700 rounded-full text-sm p-2 w-full md:min-w-[500px]"
+            errors={state?.fieldErrors?.payload}
+          />
+          <input name="commentId" value={commentId} type="hidden" />
+          <div className="flex gap-2 mt-2">
+            <button
+              type="submit"
+              className="bg-orange-500 text-white px-4 py-2 text-sm rounded-lg hover:bg-orange-600 transition-colors"
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={handleCancelClick}
+              className="text-sm text-neutral-400 hover:text-white transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }

@@ -91,3 +91,9 @@ export async function getComments(postId: number) {
   });
   return comments;
 }
+
+export async function getUserId() {
+  const session = await getSession(); // Fetch the session on the server-side
+  const userId = session.id!;
+  return userId;
+}

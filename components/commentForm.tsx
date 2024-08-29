@@ -1,63 +1,51 @@
 'use client';
 
-import { useState } from 'react';
+import { useFormState } from 'react-dom';
 import Input from './input';
 import ListComment from './List-comment';
-import CommentAction from '@/app/posts/[id]/actions'; // Ensure this import is correct
+import CommentAction from '@/app/posts/[id]/actions';
 
 interface ICommentFormProps {
   postId: number;
   userId: number;
+  comments: Array<{
+    id: number;
+    payload: string;
+    created_at: Date;
+    user: {
+      username: string;
+      avatar: string | null;
+    };
+  }>;
 }
 
-export default function CommentForm({ postId, userId }: ICommentFormProps) {
-  const [comment, setComment] = useState('');
-  const [errors, setErrors] = useState<any>(null); // Handle form errors
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setComment(e.target.value);
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('payload', comment);
-    formData.append('postId', postId.toString());
-    formData.append('userId', userId.toString());
-
-    const result = await CommentAction(null, formData);
-
-    if (result.errors) {
-      setErrors(result.errors);
-    } else {
-      setComment('');
-    }
-  };
+export default function CommentForm({
+  postId,
+  userId,
+  comments,
+}: ICommentFormProps) {
+  const [state, action] = useFormState(CommentAction, null);
 
   return (
-    <>
-      <div className="flex flex-col gap-4">
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <Input
-            name="payload"
-            type="text"
-            required
-            placeholder="댓글을 입력해주세요."
-            onChange={handleChange}
-            value={comment}
-            errors={errors?.formErrors}
-          />
-          <input name="postId" value={postId} type="hidden" readOnly />
-          <input name="userId" value={userId} type="hidden" readOnly />
-          <div className="self-end">
-            <button type="submit" className="bg-orange-500 p-2 px-4 rounded-lg">
-              작성하기
-            </button>
-          </div>
-        </form>
-        <ListComment postId={postId} userId={userId} />
-      </div>
-    </>
+    <div className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" action={action}>
+        <Input
+          name="payload"
+          type="text"
+          required
+          placeholder="댓글을 입력해주세요."
+          errors={state?.errors?.fieldErrors?.payload}
+        />
+        <input name="postId" value={postId} type="hidden" readOnly />
+        <input name="userId" value={userId} type="hidden" readOnly />
+        <div className="self-end">
+          <button type="submit" className="bg-orange-500 p-2 px-4 rounded-lg">
+            작성하기
+          </button>
+        </div>
+      </form>
+      {/* Pass the comments prop down to ListComment */}
+      <ListComment comments={comments} />
+    </div>
   );
 }

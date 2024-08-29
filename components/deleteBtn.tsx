@@ -21,7 +21,7 @@ export default function DeleteCommentBtn({
 
     try {
       await deleteComment(commentId);
-      router.refresh(); // Refresh the page to update the comments list
+      router.refresh();
     } catch (error) {
       console.error(error);
       setError('An error occurred while deleting the comment');
@@ -36,7 +36,7 @@ export default function DeleteCommentBtn({
       disabled={isDeleting}
       className="text-white text-sm"
     >
-      delete
+      ❌
     </button>
   );
 }
