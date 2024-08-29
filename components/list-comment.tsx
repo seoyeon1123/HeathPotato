@@ -4,7 +4,7 @@ import EditComment from './EditComment';
 import { formatToTimeAgo } from '@/lib/utils';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import DeleteCommentBtn from './deleteBtn';
+import DeleteCommentBtn from './deleteBtn'; // Import corrected
 
 interface IListProps {
   postId: number;
@@ -38,14 +38,14 @@ export default async function ListComment({ postId, userId }: IListProps) {
   }
 
   return (
-    <div>
+    <div className="space-y-4">
       {comments.map((comment) => (
         <div
           key={comment.id}
-          className="flex flex-row gap-2 justify-between items-center border-b-2 border-orange-500 p-4 last:border-b-0"
+          className="flex flex-row gap-4 p-4 border-b-2 border-orange-500 last:border-b-0"
         >
-          <div>
-            <div className="flex flex-row gap-3">
+          <div className="flex-1">
+            <div className="flex items-center gap-3">
               <Image
                 width={25}
                 height={25}
@@ -53,15 +53,18 @@ export default async function ListComment({ postId, userId }: IListProps) {
                 alt={comment.user.username}
                 className="rounded-full"
               />
-              <h1>{comment.user.username}</h1>
+              <h1 className="font-semibold">{comment.user.username}</h1>
             </div>
-            <p className="text-lg">{comment.payload}</p>
-            <span>{formatToTimeAgo(comment.created_at.toString())}</span>
+            <p className="text-lg mt-2">{comment.payload}</p>
+            <span className="text-gray-500 block mt-1">
+              {formatToTimeAgo(comment.created_at.toString())}
+            </span>
           </div>
           {userId === comment.user.id && (
-            <div className="flex gap-2 mt-2">
+            <div className="flex flex-row items-baseline justify-between ">
               <EditComment payload={comment.payload} commentId={comment.id} />
-              <DeleteCommentBtn commentId={comment.id} userId={userId} />
+
+              {/* <DeleteCommentBtn commentId={comment.id} /> */}
             </div>
           )}
         </div>

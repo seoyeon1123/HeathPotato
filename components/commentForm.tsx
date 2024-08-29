@@ -31,8 +31,7 @@ export default function CommentForm({ postId, userId }: ICommentFormProps) {
     if (result.errors) {
       setErrors(result.errors);
     } else {
-      setComment(''); // Clear input field
-      // Optionally refresh comments or handle UI changes
+      setComment('');
     }
   };
 

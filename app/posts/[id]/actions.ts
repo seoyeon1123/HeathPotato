@@ -91,12 +91,3 @@ export async function getComments(postId: number) {
   });
   return comments;
 }
-
-export async function deleteComment(commentId: number) {
-  try {
-    await db.comment.delete({ where: { id: commentId } });
-    revalidateTag('post-detail');
-  } catch (e) {
-    console.error(e);
-  }
-}

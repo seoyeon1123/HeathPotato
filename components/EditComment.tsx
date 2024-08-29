@@ -1,8 +1,8 @@
-'use client';
-
 import { useState } from 'react';
 import Input from './input';
-import CommentAction from '@/app/posts/[id]/actions';
+import { useFormState } from 'react-dom';
+import EditAction from '@/app/products/[id]/edit/actions';
+import updateCommentAction from '@/lib/commentActions';
 
 interface IEditCommentProps {
   payload: string;
@@ -20,69 +20,37 @@ export default function EditComment({ payload, commentId }: IEditCommentProps) {
 
   const handleCancelClick = () => {
     setIsEditing(false);
+    setNewPayload(payload); // 원래의 payload로 복원
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPayload(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('payload', newPayload);
-    formData.append('commentId', commentId.toString());
-
-    try {
-      const result = await CommentAction(null, formData);
-      if (result.errors) {
-        setError(result.errors.formErrors?.[0] || 'An error occurred');
-      } else {
-        setIsEditing(false);
-      }
-    } catch (error) {
-      console.error(error);
-      setError('An error occurred');
-    }
-  };
-
+  // useFormState를 사용하지 않고 직접 수정 처리
+  const [state, action] = useFormState(updateCommentAction, null);
   return (
     <div>
-      {isEditing ? (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-          <Input
-            name="payload"
-            type="text"
-            required
-            value={newPayload}
-            onChange={handleChange}
-            className="text-black"
-          />
-          <div className="flex gap-2 mt-2">
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              onClick={handleCancelClick}
-              className="bg-gray-500 text-white px-4 py-2 rounded"
-            >
-              Cancel
-            </button>
-          </div>
-          {error && <p className="text-red-500">{error}</p>}
-        </form>
-      ) : (
-        <button
-          onClick={handleEditClick}
-          className="bg-yellow-500 text-white px-4 py-2 rounded"
-        >
-          Edit
-        </button>
-      )}
+      <form
+        action={action}
+        className="flex flex-row gap-2 items-baseline justify-center"
+      >
+        <Input
+          name="payload"
+          type="text"
+          required
+          value={newPayload}
+          onChange={handleChange}
+          className="text-neutral-400 rounded-full text-sm"
+          errors={state?.fieldErrors.payload}
+        />
+        <input name="commentId" value={commentId} className="hidden" />
+        <div className="flex gap-2 mt-2">
+          <button className=" text-white px-4 py-2 text-sm rounded">
+            Save
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
