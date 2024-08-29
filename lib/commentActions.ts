@@ -1,4 +1,3 @@
-// lib/commentActions.ts
 'use server';
 
 import db from '@/lib/db';
@@ -6,9 +5,11 @@ import z from 'zod';
 import getSession from './session';
 import { revalidateTag } from 'next/cache';
 
-export async function deleteComment(commentId: number) {
+export async function deleteComment(id: number) {
   await db.comment.delete({
-    where: { id: commentId },
+    where: {
+      id,
+    },
   });
 }
 

@@ -6,7 +6,7 @@ import { revalidateTag } from 'next/cache';
 import z from 'zod';
 
 export async function likePost(postId: number) {
-  await new Promise((r) => setTimeout(r, 5000));
+  await new Promise((r) => setTimeout(r, 10000));
   const session = await getSession();
   try {
     await db.like.create({
@@ -18,7 +18,9 @@ export async function likePost(postId: number) {
     revalidateTag(`like-status-${postId}`);
   } catch (e) {}
 }
+
 export async function dislikePost(postId: number) {
+  await new Promise((r) => setTimeout(r, 10000));
   try {
     const session = await getSession();
     await db.like.delete({
@@ -71,4 +73,30 @@ export default async function CommentAction(
   }
 }
 
-//comment 수정하기
+export async function getComments(postId: number) {
+  const comments = await db.comment.findMany({
+    where: { postId },
+    select: {
+      id: true,
+      payload: true,
+      created_at: true,
+      user: {
+        select: {
+          username: true,
+          avatar: true,
+          id: true,
+        },
+      },
+    },
+  });
+  return comments;
+}
+
+export async function deleteComment(commentId: number) {
+  try {
+    await db.comment.delete({ where: { id: commentId } });
+    revalidateTag('post-detail');
+  } catch (e) {
+    console.error(e);
+  }
+}

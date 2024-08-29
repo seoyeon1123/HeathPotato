@@ -1,10 +1,10 @@
 // components/ListComment.tsx
 import db from '@/lib/db';
-import DeleteButton from './DeleteButton';
 import EditComment from './EditComment';
 import { formatToTimeAgo } from '@/lib/utils';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import DeleteCommentBtn from './deleteBtn';
 
 interface IListProps {
   postId: number;
@@ -57,13 +57,13 @@ export default async function ListComment({ postId, userId }: IListProps) {
             </div>
             <p className="text-lg">{comment.payload}</p>
             <span>{formatToTimeAgo(comment.created_at.toString())}</span>
-            {userId === comment.user.id && (
-              <div className="flex gap-2 mt-2">
-                <EditComment payload={comment.payload} commentId={comment.id} />
-                <DeleteButton commentId={comment.id} />
-              </div>
-            )}
           </div>
+          {userId === comment.user.id && (
+            <div className="flex gap-2 mt-2">
+              <EditComment payload={comment.payload} commentId={comment.id} />
+              <DeleteCommentBtn commentId={comment.id} userId={userId} />
+            </div>
+          )}
         </div>
       ))}
     </div>
