@@ -112,9 +112,6 @@ export default async function ProductDetail({
     });
     redirect(`/chats/${room.id}`);
   };
-  //chatRoom.create해야 할 것들 -> 제품의 판매자를 채팅방에 추가하고 버튼을 클릭한 구매자도 추가해주고 싶음.
-  //data-> users -> connect (users들에게 연결한다)
-  // chatRoom에 첫번째 넣고 싶은 User는 이 제품을 업로드한 User
 
   return (
     <>

@@ -1,3 +1,3 @@
 export default function DefaultModal() {
-  return null; // 기본적으로 아무 것도 렌더링하지 않음
+  return <div />; // 기본적으로 빈 div를 렌더링
 }
