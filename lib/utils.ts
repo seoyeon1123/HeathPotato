@@ -12,3 +12,15 @@ export function formatToTimeAgo(date: string): string {
 
   return formatter.format(diff, 'days');
 }
+
+export function formatToTime(date: string): string {
+  const time = new Date(date);
+
+  const formatter = new Intl.DateTimeFormat('ko', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true, // Ensures that the time is displayed in 12-hour format with AM/PM
+  });
+
+  return formatter.format(time);
+}

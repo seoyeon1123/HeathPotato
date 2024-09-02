@@ -1,5 +1,7 @@
+import ChatMessageList from '@/components/chat-message';
 import db from '@/lib/db';
 import getSession from '@/lib/session';
+import { Prisma } from '@prisma/client';
 import { notFound } from 'next/navigation';
 
 async function getRoom(id: string) {
@@ -18,20 +20,68 @@ async function getRoom(id: string) {
     const canSee = Boolean(room.users.find((user) => user.id === session.id));
 
     if (!canSee) {
-      //즉 현재 로그인한 사용자의 id와 같은 것을 가진 object가 room의 users array에 없다면, 메시지를 볼 수 없음.
       return null;
     }
   }
   return room;
 }
 
-//url을 가지고 있다고 해서 room의 메시지를 볼 수 있으면 안됨 -> 이를 위해서 room이 먼저 찾아지는지 확인해야 함 -> 기본적으로 array에서 검색을 하면 된다.
-//find가 나에게 user를 주거나 undefined를 주게 됨 .
+async function getUserProfile() {
+  const session = await getSession();
+  const user = await db.user.findUnique({
+    where: {
+      id: session.id,
+    },
+    select: {
+      username: true,
+      avatar: true,
+    },
+  });
+  return user;
+}
+
+async function getMessages(chatRoomId: string) {
+  const messge = await db.message.findMany({
+    where: {
+      chatRoomId,
+    },
+    select: {
+      id: true,
+      payload: true,
+      created_at: true,
+      userId: true,
+      user: {
+        select: {
+          avatar: true,
+          username: true,
+        },
+      },
+    },
+  });
+  return messge;
+}
+
+export type InitialChatMessages = Prisma.PromiseReturnType<typeof getMessages>;
 
 export default async function ChatRoom({ params }: { params: { id: string } }) {
   const room = await getRoom(params.id);
   if (!room) {
     return notFound();
   }
-  return <h1>chat!</h1>;
+  const user = await getUserProfile();
+  if (!user) {
+    return notFound();
+  }
+
+  const initialMessages = await getMessages(params.id);
+  const session = await getSession();
+  return (
+    <ChatMessageList
+      chatRoomId={params.id}
+      userId={session.id!}
+      username={user.username}
+      avatar={user.avatar!}
+      initialMessages={initialMessages}
+    />
+  );
 }
