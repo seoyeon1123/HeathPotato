@@ -3,6 +3,11 @@ import db from '@/lib/db';
 import getSession from '@/lib/session';
 import { Prisma } from '@prisma/client';
 import { notFound } from 'next/navigation';
+import {
+  unstable_cache as nextCache,
+  revalidatePath,
+  revalidateTag,
+} from 'next/cache';
 
 async function getRoom(id: string) {
   const room = await db.chatRoom.findUnique({
@@ -61,6 +66,10 @@ async function getMessages(chatRoomId: string) {
   return messge;
 }
 
+const getCachedMessage = nextCache(getMessages, ['chat-message'], {
+  tags: ['chat-message'],
+});
+
 export type InitialChatMessages = Prisma.PromiseReturnType<typeof getMessages>;
 
 export default async function ChatRoom({ params }: { params: { id: string } }) {
@@ -73,7 +82,7 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
     return notFound();
   }
 
-  const initialMessages = await getMessages(params.id);
+  const initialMessages = await getCachedMessage(params.id);
   const session = await getSession();
   return (
     <ChatMessageList
@@ -81,7 +90,7 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
       userId={session.id!}
       username={user.username}
       avatar={user.avatar!}
-      initialMessages={initialMessages}
+      initialMessages={initialMessages!}
     />
   );
 }

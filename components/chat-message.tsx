@@ -1,8 +1,23 @@
 'use client';
 
+import { isToday, parseISO } from 'date-fns';
+import {
+  unstable_cache as nextCache,
+  revalidatePath,
+  revalidateTag,
+} from 'next/cache';
 import { InitialChatMessages } from '@/app/chats/[id]/page';
-import { saveMessage } from '@/app/chats/actions';
-import { formatToTimeAgo } from '@/lib/utils';
+import {
+  countUnreadMessages,
+  markMessagesAsRead,
+  saveMessage,
+} from '@/app/chats/actions';
+import {
+  formatDate,
+  formatToDayAndTime,
+  formatToTime,
+  formatToTimeAgo,
+} from '@/lib/utils';
 import { ArrowUpCircleIcon } from '@heroicons/react/24/solid';
 import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 import Image from 'next/image';
@@ -20,6 +35,7 @@ interface ChatMessageListProps {
   username: string;
   avatar: string;
 }
+
 export default function ChatMessagesList({
   initialMessages,
   userId,
@@ -29,6 +45,7 @@ export default function ChatMessagesList({
 }: ChatMessageListProps) {
   const [messages, setMessages] = useState(initialMessages);
   const [message, setMessage] = useState('');
+  const [newMessageCount, setNewMessageCount] = useState(0);
   const channel = useRef<RealtimeChannel>();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,29 +54,29 @@ export default function ChatMessagesList({
     } = event;
     setMessage(value);
   };
+
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    setMessages((prevMsgs) => [
-      ...prevMsgs,
-      {
-        id: Date.now(),
-        payload: message,
-        created_at: new Date(),
-        userId,
-        user: {
-          username: 'string',
-          avatar: 'xxx',
-        },
+    const newMsg = {
+      id: Date.now(),
+      payload: message,
+      created_at: new Date(),
+      userId,
+      user: {
+        username: 'string',
+        avatar: 'xxx',
       },
-    ]);
+    };
+
+    setMessages((prevMsgs) => [...prevMsgs, newMsg]);
     channel.current?.send({
       type: 'broadcast',
       event: 'message',
       payload: {
-        id: Date.now(),
-        created_at: new Date(),
-        payload: message,
+        id: newMsg.id,
+        created_at: new Date().toISOString(),
+        payload: newMsg.payload,
         userId,
         user: {
           username,
@@ -68,15 +85,22 @@ export default function ChatMessagesList({
       },
     });
     await saveMessage(message, chatRoomId);
-
-    //우선은 user가 쓴 message를 보낼 것임 -> state안에 저장된 message를 나타냄
     setMessage('');
+  };
+  const handleMessagesRead = () => {
+    setNewMessageCount(0);
   };
 
   useEffect(() => {
-    const client = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY);
+    const fetchUnreadMessages = async () => {
+      const unreadCount = await countUnreadMessages(chatRoomId, userId);
+      setNewMessageCount(unreadCount);
+    };
 
-    channel.current = client.channel(`room -${chatRoomId}`);
+    fetchUnreadMessages();
+
+    const client = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY);
+    channel.current = client.channel(`room-${chatRoomId}`);
     channel.current
       .on(
         'broadcast',
@@ -88,10 +112,26 @@ export default function ChatMessagesList({
         }
       )
       .subscribe();
+
+    // Cleanup function
     return () => {
       channel.current?.unsubscribe();
+
+      // Handle the async operation separately
+      const markAsRead = async () => {
+        await markMessagesAsRead(chatRoomId, userId);
+      };
+
+      markAsRead(); // Call the async function
     };
   }, []);
+
+  const formatMessageTime = (createdAt: Date) => {
+    return isToday(parseISO(createdAt.toString()))
+      ? formatToTime(createdAt.toString())
+      : formatToDayAndTime(createdAt.toString());
+  };
+
   return (
     <div className="p-5 flex flex-col gap-5 min-h-screen justify-end">
       {messages.map((message) => (
@@ -123,7 +163,9 @@ export default function ChatMessagesList({
               {message.payload}
             </span>
             <span className="text-xs">
-              {formatToTimeAgo(message.created_at.toString())}
+              {message.created_at.toString() === new Date().toISOString()
+                ? formatToDayAndTime(message.created_at.toString())
+                : formatToTime(message.created_at.toString())}
             </span>
           </div>
         </div>
@@ -138,7 +180,7 @@ export default function ChatMessagesList({
           name="message"
           placeholder="Write a message..."
         />
-        <button className="absolute right-0">
+        <button className="absolute right-0" onClick={handleMessagesRead}>
           <ArrowUpCircleIcon className="size-10 text-orange-500 transition-colors hover:text-orange-300" />
         </button>
       </form>

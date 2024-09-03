@@ -1,3 +1,5 @@
+import { format, isToday, parseISO } from 'date-fns';
+
 export function formatToWon(price: number): string {
   return price.toLocaleString('ko');
 }
@@ -23,4 +25,36 @@ export function formatToTime(date: string): string {
   });
 
   return formatter.format(time);
+}
+
+export function formatToDayAndTime(date: string): string {
+  const dateObj = new Date(date);
+
+  if (isNaN(dateObj.getTime())) {
+    return 'Invalid date'; // 유효하지 않은 날짜일 경우 반환
+  }
+
+  // 날짜 부분 포맷팅
+  const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
+    month: 'long', // 'September'
+    day: '2-digit', // '02'
+  });
+
+  // 시간 부분 포맷팅
+  const timeFormatter = new Intl.DateTimeFormat('ko-KR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true, // 12시간 형식
+  });
+
+  // 날짜와 시간 포맷팅
+  const formattedDate = dateFormatter.format(dateObj);
+  const formattedTime = timeFormatter.format(dateObj);
+
+  return `${formattedDate} ${formattedTime}`;
+}
+
+export function formatDate(date: string): string {
+  const parsedDate = parseISO(date);
+  return isToday(parsedDate) ? formatToTime(date) : formatToDayAndTime(date);
 }

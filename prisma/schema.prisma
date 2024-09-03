@@ -117,4 +117,6 @@ model Message {
   user       User     @relation(fields: [userId], references: [id])
   chatRoomId String
   userId     Int
+  isRead Boolean @default(false)
+  lastReadAt DateTime?
 }
