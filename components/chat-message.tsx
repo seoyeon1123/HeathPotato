@@ -7,11 +7,7 @@ import {
   revalidateTag,
 } from 'next/cache';
 import { InitialChatMessages } from '@/app/chats/[id]/page';
-import {
-  countUnreadMessages,
-  markMessagesAsRead,
-  saveMessage,
-} from '@/app/chats/actions';
+import { markMessagesAsRead, saveMessage } from '@/app/chats/actions';
 import {
   formatDate,
   formatToDayAndTime,
@@ -47,6 +43,7 @@ export default function ChatMessagesList({
   const [message, setMessage] = useState('');
   const [newMessageCount, setNewMessageCount] = useState(0);
   const channel = useRef<RealtimeChannel>();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -92,13 +89,6 @@ export default function ChatMessagesList({
   };
 
   useEffect(() => {
-    const fetchUnreadMessages = async () => {
-      const unreadCount = await countUnreadMessages(chatRoomId, userId);
-      setNewMessageCount(unreadCount);
-    };
-
-    fetchUnreadMessages();
-
     const client = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY);
     channel.current = client.channel(`room-${chatRoomId}`);
     channel.current
@@ -126,11 +116,10 @@ export default function ChatMessagesList({
     };
   }, []);
 
-  const formatMessageTime = (createdAt: Date) => {
-    return isToday(parseISO(createdAt.toString()))
-      ? formatToTime(createdAt.toString())
-      : formatToDayAndTime(createdAt.toString());
-  };
+  useEffect(() => {
+    // Scroll to the bottom of the chat when messages change
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   return (
     <div className="p-5 flex flex-col gap-5 min-h-screen justify-end">
@@ -170,20 +159,22 @@ export default function ChatMessagesList({
           </div>
         </div>
       ))}
-      <form className="flex relative" onSubmit={onSubmit}>
-        <input
-          required
-          onChange={onChange}
-          value={message}
-          className="bg-transparent rounded-full w-full h-10 focus:outline-none px-5 ring-2 focus:ring-4 transition ring-neutral-200 focus:ring-neutral-50 border-none placeholder:text-neutral-400"
-          type="text"
-          name="message"
-          placeholder="Write a message..."
-        />
-        <button className="absolute right-0" onClick={handleMessagesRead}>
-          <ArrowUpCircleIcon className="size-10 text-orange-500 transition-colors hover:text-orange-300" />
-        </button>
-      </form>
+      <div ref={messagesEndRef}>
+        <form className="flex relative" onSubmit={onSubmit}>
+          <input
+            required
+            onChange={onChange}
+            value={message}
+            className="bg-transparent rounded-full w-full h-10 focus:outline-none px-5 ring-2 focus:ring-4 transition ring-neutral-200 focus:ring-neutral-50 border-none placeholder:text-neutral-400"
+            type="text"
+            name="message"
+            placeholder="Write a message..."
+          />
+          <button className="absolute right-0" onClick={handleMessagesRead}>
+            <ArrowUpCircleIcon className="size-10 text-orange-500 transition-colors hover:text-orange-300" />
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

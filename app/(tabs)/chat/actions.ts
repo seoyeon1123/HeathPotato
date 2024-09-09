@@ -49,7 +49,7 @@ export async function getChatRoom() {
     },
   });
 
-  // 각 채팅방의 새 메시지 개수를 계산
+      
   const chatRoomsWithUnreadCount = await Promise.all(
     chatRooms.map(async (chatRoom) => {
       const unreadMessagesCount = await getUnreadMessagesCount(
