@@ -126,6 +126,8 @@ model Message {
 model LiveStream {
   id Int @id @default(autoincrement())
   title String
+  description String?
+
   stream_key String
   stream_id String
 
@@ -134,6 +136,7 @@ model LiveStream {
 
   user       User     @relation(fields: [userId], references: [id])
   userId     Int
+
 }
 
 //cloudflare가 우리에게 건네줄 stream id도 필요함!

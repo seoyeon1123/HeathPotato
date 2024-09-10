@@ -1,7 +1,7 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 
-export default function Chat() {
+export default function Live() {
   return (
     <div>
       <Link

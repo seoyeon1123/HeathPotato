@@ -4,13 +4,22 @@ import getSession from '@/lib/session';
 import { redirect } from 'next/navigation';
 import { record, z } from 'zod';
 
-const title = z.string();
+const formSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+});
 
 export async function startStream(_: any, formData: FormData) {
-  const results = title.safeParse(formData.get('title'));
+  const data = {
+    title: formData.get('title'),
+    description: formData.get('description'),
+  };
+
+  const results = formSchema.safeParse(data);
   if (!results.success) {
     return results.error.flatten();
   }
+
   const response = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/stream/live_inputs`,
     {
@@ -20,7 +29,7 @@ export async function startStream(_: any, formData: FormData) {
       },
       body: JSON.stringify({
         meta: {
-          name: results.data,
+          name: results.data.title,
         },
         recording: {
           mode: 'automatic',
@@ -28,14 +37,15 @@ export async function startStream(_: any, formData: FormData) {
       }),
     }
   );
-  const data = await response.json();
+  const fetchData = await response.json();
+  console.log(fetchData);
   const session = await getSession();
-  console.log(data);
   const stream = await db.liveStream.create({
     data: {
-      title: results.data,
-      stream_id: data.result.uid,
-      stream_key: data.result.rtmps.streamKey,
+      title: results.data.title,
+      description: results.data.description,
+      stream_id: fetchData.result.uid,
+      stream_key: fetchData.result.rtmps.streamKey,
       userId: session.id!,
     },
     select: {

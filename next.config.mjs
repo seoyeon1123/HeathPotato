@@ -9,7 +9,10 @@ const nextConfig = {
         hostname: 'imagedelivery.net',
       },
     ],
-    domains: ['imagedelivery.net'],
+    domains: [
+      'imagedelivery.net',
+      'customer-6fknsj3llsy5y0kn.cloudflarestream.com',
+    ],
   },
 };
 
