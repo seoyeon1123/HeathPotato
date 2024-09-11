@@ -59,7 +59,9 @@ async function checkStreamStatus(streamId: string) {
 
   if (data && data.result) {
     console.log('Stream 상태 데이터:', data.result.status); // 상태 관련 데이터 확인
+
     const status = data.result.status?.current?.state;
+    console.log('현재 상태: ', status);
     return status;
   } else {
     console.error('No result found in API response:', data);

@@ -51,12 +51,12 @@ export default async function LiveStreamingVideos({
           ></iframe>
           <div className="p-2 text-white flex flex-row justify-between *:text-sm">
             <p className="mb-2">
-              <span className="bg-orange-400 rounded-full px-2 py-1 bg-opacity-40 inline-block">
-                업데이트 시간: {new Date(latestVideo.created).toLocaleString()}
+              <span className="bg-orange-400 rounded-full px-2 py-1 bg-opacity-40 break-all">
+                방송 시간 : {new Date(latestVideo.created).toLocaleString()}
               </span>
             </p>
             <p>
-              <span className="bg-orange-400 rounded-full px-2 py-1 bg-opacity-40 inline-block">
+              <span className="bg-orange-400 rounded-full px-2 py-1 bg-opacity-40 break-all">
                 {Math.floor(latestVideo.duration / 60)}분{' '}
                 {Math.floor(latestVideo.duration % 60)}초
               </span>
