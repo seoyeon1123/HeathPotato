@@ -1,6 +1,7 @@
 'use server';
 
 import db from '@/lib/db';
+import getSession from '@/lib/session';
 
 export async function getStreamVideo(input_UID: string) {
   const response = await fetch(
@@ -47,4 +48,18 @@ export async function deleteStream(input_UID: string, id: number) {
     console.error('Error deleting stream:', error);
     // 추가적인 에러 처리 로직
   }
+}
+
+export async function saveLiveChatMessage(payload: string, streamId: number) {
+  const session = await getSession();
+  const message = await db.liveChatMessage.create({
+    data: {
+      payload,
+      streamId,
+      userId: session.id!,
+    },
+    select: {
+      id: true,
+    },
+  });
 }

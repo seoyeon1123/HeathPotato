@@ -1,4 +1,5 @@
 import DeleteStreamBtn from '@/components/DeleteStreamBtn';
+import LiveStreamChat from '@/components/LiveStreamChat';
 import LiveStreamingVideos from '@/components/LiveStreamingVideos';
 import db from '@/lib/db';
 import getSession from '@/lib/session';
@@ -162,6 +163,9 @@ export default async function StreamDetail({
             </div>
           </div>
         ) : null}
+        <div>
+          <LiveStreamChat id={id} />
+        </div>
       </div>
     </>
   );

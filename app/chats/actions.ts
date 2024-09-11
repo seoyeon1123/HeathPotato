@@ -20,20 +20,6 @@ export async function saveMessage(payload: string, chatRoomId: string) {
   revalidateTag('chat-message');
 }
 
-// export async function countUnreadMessages(chatRoomId: string, userId: number) {
-//   const unreadMessageCount = await db.message.count({
-//     where: {
-//       chatRoomId,
-//       userId: {
-//         not: userId,
-//       },
-//       isRead: false,
-//     },
-//   });
-//   revalidateTag('chat-message');
-//   return unreadMessageCount;
-// }
-
 export async function markMessagesAsRead(chatRoomId: string, userId: number) {
   await db.message.updateMany({
     where: {

@@ -14,9 +14,11 @@ export default function Live() {
   const [selectedStatus, setSelectedStatus] = useState<string | null>('생방송');
   const [streams, setStreams] = useState<any[]>([]);
   const [filteredStreams, setFilteredStreams] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // 로딩 상태 변수
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true); // 데이터를 가져오기 전에 로딩 시작
       const streamsData = await getStreams();
       if (!streamsData) {
         return notFound();
@@ -36,6 +38,7 @@ export default function Live() {
       );
 
       setStreams(streamsWithVideos);
+      setLoading(false); // 데이터 가져오기 완료 후 로딩 종료
     }
 
     fetchData();
@@ -68,7 +71,12 @@ export default function Live() {
         <ChooseStatus onChange={setSelectedStatus} />
       </div>
       <div className="mt-5">
-        {filteredStreams.length > 0 ? (
+        {loading ? ( // 로딩 중일 때 표시할 UI
+          <div className="flex justify-center items-center mt-32 flex-col gap-3">
+            <p className="text-9xl text-white animate-bounce">🥕</p>
+            <p className="text-sm font-semibold">(당근이 열심히 찾는 중..)</p>
+          </div>
+        ) : filteredStreams.length > 0 ? (
           filteredStreams.map((stream) => (
             <Link
               href={`/streams/${stream.id}`}

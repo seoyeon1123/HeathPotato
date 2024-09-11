@@ -31,6 +31,7 @@ model User {
   messages Message[]
 
   liveStream LiveStream[]
+  liveStreamMessage LiveChatMessage[]
 
 }
 
@@ -137,6 +138,19 @@ model LiveStream {
   user       User     @relation(fields: [userId], references: [id])
   userId     Int
 
+  LiveChatMessage LiveChatMessage[]
+
 }
 
-//cloudflare가 우리에게 건네줄 stream id도 필요함!
+model LiveChatMessage {
+  id          Int         @id @default(autoincrement())
+  payload     String
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  
+  liveStream  LiveStream   @relation(fields: [streamId], references: [id])
+  streamId    Int          // LiveStream의 id를 참조하는 외래 키
+  user        User         @relation(fields: [userId], references: [id])
+  userId      Int
+}
+

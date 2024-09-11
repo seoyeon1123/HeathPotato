@@ -40,8 +40,9 @@ export async function checkStreamStatus(streamId: string) {
   console.log('API 응답 데이터:', data);
 
   if (data && data.result) {
-    console.log('Stream 상태 데이터:', data.result.status); // 상태 관련 데이터 확인
+    console.log('Stream 상태 데이터:', data.result.status);
     const status = data.result.status?.current?.state;
+    console.log(status);
     return status === undefined ? null : status;
   } else {
     console.error('No result found in API response:', data);

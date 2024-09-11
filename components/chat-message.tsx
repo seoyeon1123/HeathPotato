@@ -19,10 +19,10 @@ import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
-const SUPABASE_PUBLIC_KEY =
+export const SUPABASE_PUBLIC_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBubHh0ZmZxZXNrbnJxdWRudXNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUyNDk5NTMsImV4cCI6MjA0MDgyNTk1M30.hp4xZkxE7HdtqzvoTVskCLGNi1JvaWuScQStzPsPpJk';
 
-const SUPABASE_URL = 'https://pnlxtffqesknrqudnusk.supabase.co';
+export const SUPABASE_URL = 'https://pnlxtffqesknrqudnusk.supabase.co';
 
 interface ChatMessageListProps {
   initialMessages: InitialChatMessages;
