@@ -4,15 +4,13 @@ import LiveStreamMessageForm from './LiveStreamMessageForm';
 import { Prisma } from '@prisma/client';
 import { notFound } from 'next/navigation';
 
-// 스트림 ID를 기준으로 진행자의 userId를 가져오는 함수
 async function getLiveStream(id: number) {
   return await db.liveStream.findUnique({
     where: { id },
-    select: { userId: true }, // 진행자의 userId를 선택
+    select: { userId: true },
   });
 }
 
-// 현재 세션의 사용자 정보를 가져오는 함수
 async function getUserProfile() {
   const session = await getSession();
   const user = await db.user.findUnique({
@@ -27,7 +25,6 @@ async function getUserProfile() {
   return user;
 }
 
-// 특정 스트림의 채팅 메시지를 가져오는 함수
 async function getLiveStreamChat(id: number) {
   const liveStreamChat = await db.liveChatMessage.findMany({
     where: {
@@ -70,14 +67,13 @@ export default async function LiveStreamChat({ id }: { id: number }) {
   }
 
   return (
-    <div className="mt-10">
+    <div className="mt-5">
       <LiveStreamMessageForm
         id={id}
         initialMessages={liveStreamChat!}
-        userId={session.id!}
+        userId={liveStream.userId}
         username={user.username}
         avatar={user.avatar!}
-        streamId={id}
       />
     </div>
   );

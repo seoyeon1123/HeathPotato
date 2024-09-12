@@ -56,13 +56,17 @@ async function checkStreamStatus(streamId: string) {
   }
 
   const data = await response.json();
-  console.log('API 응답 데이터:', data); // 전체 응답 데이터를 콘솔에 출력
+  console.log('API 응답 데이터:', data);
 
   if (data && data.result) {
-    console.log('Stream 상태 데이터:', data.result.status); // 상태 관련 데이터 확인
-
     const status = data.result.status?.current?.state;
-    console.log('현재 상태: ', status);
+    console.log('Stream 상태 데이터:', status);
+
+    // status가 없을 경우 '준비중' 상태로 반환
+    if (!status) {
+      console.log('No current state found, defaulting to 준비중');
+      return '준비중';
+    }
     return status;
   } else {
     console.error('No result found in API response:', data);
@@ -101,12 +105,18 @@ export default async function StreamDetail({
             <VideoCameraSlashIcon className="h-7 w-7 text-red-600" />
             <h1 className="text-2xl">라이브가 종료되었습니다.</h1>
           </div>
-        ) : (
+        ) : streamStatus === '준비중' ? (
           <div className="flex flex-row items-center gap-3">
             <HandRaisedIcon className="h-7 w-7 text-yellow-400" />
             <h1 className="text-2xl">잠시만 기다려주세요!</h1>
           </div>
+        ) : (
+          <div className="flex flex-row items-center gap-3">
+            <HandRaisedIcon className="h-7 w-7 text-yellow-400" />
+            <h1 className="text-2xl">상태를 알 수 없습니다.</h1>
+          </div>
         )}
+
         <div className="relative aspect-video">
           {streamStatus === 'connected' ? (
             <iframe
@@ -140,6 +150,7 @@ export default async function StreamDetail({
             <h3>{stream.user.username}</h3>
           </div>
         </div>
+
         <div className="py-5 flex flex-row justify-between items-center">
           <h1 className="text-3xl font-semibold">{stream.title}</h1>
           {stream.userId === session.id && (
@@ -149,6 +160,7 @@ export default async function StreamDetail({
         <p className="text-lg text-gray-300 leading-relaxed mb-5 bg-neutral-800 p-4 rounded-lg shadow-lg">
           {stream.description}
         </p>
+
         {stream.userId === session.id ? (
           <div className="bg-yellow-200 text-black p-5 rounded-md">
             <div className="flex flex-wrap">
@@ -163,6 +175,7 @@ export default async function StreamDetail({
             </div>
           </div>
         ) : null}
+
         <div>
           <LiveStreamChat id={id} />
         </div>

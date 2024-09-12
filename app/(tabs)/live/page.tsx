@@ -104,9 +104,17 @@ export default function Live() {
                 )}
               </div>
               <div className="ml-4 flex-1">
-                <h2 className="text-xl font-semibold text-orange-400">
-                  {`${stream.title} ⌛️`}
-                </h2>
+                {selectedStatus === null ? (
+                  <>
+                    <h2 className="text-xl font-semibold text-orange-400">
+                      {`${stream.title} ⌛️`}
+                    </h2>
+                  </>
+                ) : (
+                  <h2 className="text-xl font-semibold text-orange-400">
+                    {`${stream.title}`}
+                  </h2>
+                )}
                 <p className="text-neutral-300 mt-1 text-sm">
                   {stream.description}
                 </p>

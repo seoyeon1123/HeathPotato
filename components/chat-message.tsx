@@ -103,7 +103,6 @@ export default function ChatMessagesList({
       )
       .subscribe();
 
-    // Cleanup function
     return () => {
       channel.current?.unsubscribe();
 

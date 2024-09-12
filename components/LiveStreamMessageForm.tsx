@@ -1,6 +1,10 @@
 'use client';
 
-import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/solid';
+import {
+  ChatBubbleOvalLeftEllipsisIcon,
+  EllipsisHorizontalCircleIcon,
+  EllipsisHorizontalIcon,
+} from '@heroicons/react/24/solid';
 import { useEffect, useRef, useState } from 'react';
 import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 import { SUPABASE_PUBLIC_KEY, SUPABASE_URL } from './chat-message';
@@ -8,27 +12,24 @@ import { InitialChatMessages } from './LiveStreamChat';
 import { saveLiveChatMessage } from '@/app/streams/[id]/action';
 import Image from 'next/image';
 
-// LiveChatMessageListProps 인터페이스 정의
 interface LiveChatMessageListProps {
   initialMessages: InitialChatMessages;
   id: number;
   userId: number;
   username: string;
   avatar: string;
-  streamId: number;
 }
 
-// LiveStreamMessageForm 컴포넌트
 export default function LiveStreamMessageForm({
   id,
   userId,
   initialMessages,
   username,
   avatar,
-  streamId,
 }: LiveChatMessageListProps) {
   const [messages, setMessages] = useState(initialMessages);
   const [message, setMessage] = useState('');
+  const [showAllMessages, setShowAllMessages] = useState(false); // 전체 메시지 보기 상태
   const channel = useRef<RealtimeChannel>();
 
   // 컴포넌트 마운트 시 Supabase 클라이언트를 설정하고 채널을 구독
@@ -39,7 +40,7 @@ export default function LiveStreamMessageForm({
     channel.current
       .on('broadcast', { event: 'message' }, (payload) => {
         console.log(payload);
-        // 여기에 실시간 메시지 수신 후의 처리 로직을 추가할 수 있습니다
+        // 실시간 메시지 수신 처리
       })
       .subscribe();
     return () => {
@@ -73,15 +74,26 @@ export default function LiveStreamMessageForm({
       event: 'message',
       payload: newMsg,
     });
-    await saveLiveChatMessage(message, streamId);
+    await saveLiveChatMessage(message, id);
     setMessage(''); // 메시지 전송 후 입력 필드 초기화
   };
 
+  // 메시지 표시 로직 (최신 8개 또는 전체)
+  const displayedMessages = showAllMessages ? messages : messages.slice(-7);
+
   return (
     <>
-      <div className="flex flex-col gap-3 mb-3">
-        {messages.map((msg) => (
-          <div key={msg.id} className="flex flex-row gap-3">
+      <div className="flex flex-col gap-3 mb-10">
+        {messages.length > 8 && !showAllMessages && (
+          <button
+            onClick={() => setShowAllMessages(true)}
+            className="text-orange-600 flex items-center justify-center text-center"
+          >
+            <EllipsisHorizontalIcon className="size-8" />
+          </button>
+        )}
+        {displayedMessages.map((msg) => (
+          <div key={msg.created_at.toString()} className="flex flex-row gap-3">
             <Image
               src={msg.user.avatar! || '/path/to/default/image.png'} // 기본 이미지 설정
               alt={msg.user.username}
@@ -99,7 +111,7 @@ export default function LiveStreamMessageForm({
         ))}
       </div>
 
-      <div className="mb-5">
+      <div className="fixed bottom-0 left-0 right-0 bg-neutral-800 p-3 z-10">
         <form className="flex flex-row w-full gap-3" onSubmit={onsubmit}>
           <input
             name="liveStreamMessage"
