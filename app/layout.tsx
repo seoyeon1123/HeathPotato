@@ -1,8 +1,19 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Poor_Story, Jua } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const poor = Poor_Story({
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['normal'],
+  variable: '--poor-text',
+});
+
+const jua = Jua({
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['normal'],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -20,7 +31,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className}
+        className={`
+          ${jua.className}
         max-w-screen-sm
         bg-stone-900 
         text-white mx-auto`}
@@ -30,3 +42,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+//Inter -> Google Fonts에 있는 폰트들을 쉽게 불러올 수 있도록 해주는 역할을 한다.

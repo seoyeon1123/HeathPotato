@@ -29,10 +29,9 @@ export default function LiveStreamMessageForm({
 }: LiveChatMessageListProps) {
   const [messages, setMessages] = useState(initialMessages);
   const [message, setMessage] = useState('');
-  const [showAllMessages, setShowAllMessages] = useState(false); // 전체 메시지 보기 상태
+  const [showAllMessages, setShowAllMessages] = useState(false);
   const channel = useRef<RealtimeChannel>();
 
-  // 컴포넌트 마운트 시 Supabase 클라이언트를 설정하고 채널을 구독
   useEffect(() => {
     const client = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY);
 
@@ -40,7 +39,6 @@ export default function LiveStreamMessageForm({
     channel.current
       .on('broadcast', { event: 'message' }, (payload) => {
         console.log(payload);
-        // 실시간 메시지 수신 처리
       })
       .subscribe();
     return () => {
@@ -48,7 +46,6 @@ export default function LiveStreamMessageForm({
     };
   }, [id]);
 
-  // 입력 필드 변화 처리
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setMessage(value);
@@ -78,7 +75,6 @@ export default function LiveStreamMessageForm({
     setMessage(''); // 메시지 전송 후 입력 필드 초기화
   };
 
-  // 메시지 표시 로직 (최신 8개 또는 전체)
   const displayedMessages = showAllMessages ? messages : messages.slice(-7);
 
   return (
