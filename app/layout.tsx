@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Poor_Story, Jua } from 'next/font/google';
+import { Poor_Story, Dongle, Gothic_A1 } from 'next/font/google';
 import './globals.css';
 
 const poor = Poor_Story({
@@ -9,7 +9,7 @@ const poor = Poor_Story({
   variable: '--poor-text',
 });
 
-const jua = Jua({
+const dongle = Dongle({
   subsets: ['latin'],
   weight: ['400'],
   style: ['normal'],
@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`
-          ${jua.className}
+          ${poor.className}
         max-w-screen-sm
         bg-stone-900 
         text-white mx-auto`}
@@ -42,5 +42,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-//Inter -> Google Fonts에 있는 폰트들을 쉽게 불러올 수 있도록 해주는 역할을 한다.
