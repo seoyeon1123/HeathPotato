@@ -30,6 +30,7 @@ interface ChatMessageListProps {
   chatRoomId: string;
   username: string;
   avatar: string;
+  buyer: string;
 }
 
 export default function ChatMessagesList({
@@ -38,6 +39,7 @@ export default function ChatMessagesList({
   chatRoomId,
   username,
   avatar,
+  buyer,
 }: ChatMessageListProps) {
   const [messages, setMessages] = useState(initialMessages);
   const [message, setMessage] = useState('');
@@ -60,6 +62,7 @@ export default function ChatMessagesList({
       payload: message,
       created_at: new Date(),
       userId,
+
       user: {
         username: 'string',
         avatar: 'xxx',
@@ -121,7 +124,10 @@ export default function ChatMessagesList({
   }, [messages]);
 
   return (
-    <div className="p-5 flex flex-col gap-5 min-h-screen justify-end">
+    <div className="p-5 pt-0 flex flex-col gap-5 min-h-screen justify-end">
+      <div className="border-b-2 border-neutral-700 bg-opacity-50 py-5">
+        <h1 className="text-center text-2xl">{buyer}</h1>
+      </div>
       {messages.map((message) => (
         <div
           key={message.id}

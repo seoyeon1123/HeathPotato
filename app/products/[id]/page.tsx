@@ -16,6 +16,15 @@ async function getIsOwner(userId: number) {
   return false;
 }
 
+// async function getChatRoom () {
+//   const chat = await db.chatRoom.findMany({
+//     where : {
+//       id :
+
+//     }
+//   })
+// }
+
 async function getProduct(id: number) {
   console.log('product');
   const product = db.product.findUnique({
