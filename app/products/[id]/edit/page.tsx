@@ -11,6 +11,7 @@ async function getProduct(id: number) {
       price: true,
       description: true,
       id: true,
+      status: true,
     },
   });
   return product;

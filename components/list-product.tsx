@@ -8,8 +8,9 @@ interface ListProductProps {
   created_at: Date;
   photo: string;
   id: number;
-  status: keyof typeof ProductStatus;
+  status: keyof typeof ProductStatus; // Status must match the enum keys
 }
+
 export default function ListProduct({
   status,
   title,
@@ -18,25 +19,45 @@ export default function ListProduct({
   photo,
   id,
 }: ListProductProps) {
+  // Ensure that status is properly mapped to the display value
+  const displayedStatus = ProductStatus[status]; // Map directly to the enum
+
   return (
-    <Link href={`/products/${id}`} className="flex gap-5">
-      <div className="relative size-28 rounded-md overflow-hidden">
-        <Image
-          fill
-          priority
-          src={`${photo}/avatar`}
-          className="object-cover"
-          alt={title}
-        />
-      </div>
-      <div className="flex flex-col gap-1 *:text-white">
-        <span className="text-lg">{title}</span>
-        <span className="text-sm text-neutral-500">
-          {formatToTimeAgo(created_at.toString())}
-        </span>
-        <span>{status}</span>
-        <span className="text-lg font-semibold">{formatToWon(price)}원</span>
-      </div>
-    </Link>
+    <>
+      {status === 'SOLD_OUT' ? null : (
+        <>
+          <Link href={`/products/${id}`} className="flex gap-5">
+            <div className="relative size-28 rounded-md overflow-hidden">
+              <Image
+                fill
+                priority
+                src={`${photo}/avatar`}
+                className="object-cover"
+                alt={title}
+              />
+            </div>
+            <div className="flex flex-col *:text-white">
+              <div className="flex flex-col gap-2">
+                <span className="text-xl">{title}</span>
+                <span className="text-sm text-neutral-500">
+                  {formatToTimeAgo(created_at.toString())}
+                </span>
+
+                <div className="flex flex-row items-center gap-2">
+                  {status === 'RESERVED' ? (
+                    <span className="rounded-full px-2 py-1 text-sm bg-orange-500">
+                      {displayedStatus}
+                    </span>
+                  ) : null}
+                  <span className="text-lg font-semibold">
+                    {formatToWon(price)}원
+                  </span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </>
+      )}
+    </>
   );
 }

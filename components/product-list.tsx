@@ -14,14 +14,25 @@ export default function ProductList({ initialProducts }: ProductListProps) {
   const [products, setProducts] = useState(
     initialProducts.map((product) => ({
       ...product,
-      status: product.status as keyof typeof ProductStatus, // status를 enum 타입으로 변환
+      status: product.status as keyof typeof ProductStatus,
     }))
   );
+
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
   const trigger = useRef<HTMLSpanElement>(null);
+
+  const fetchProducts = async () => {
+    const newProducts = await getMoreProducts(0); // 처음 페이지를 다시 가져옴
+    const updatedProducts = newProducts.map((product) => ({
+      ...product,
+      status: product.status as keyof typeof ProductStatus, // status 변환
+    }));
+    setProducts(updatedProducts); // 상태 업데이트
+  };
   useEffect(() => {
+    fetchProducts();
     const observer = new IntersectionObserver(
       async (
         entries: IntersectionObserverEntry[],

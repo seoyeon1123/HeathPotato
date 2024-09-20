@@ -1,7 +1,6 @@
 import ProduceProfile from '@/components/ProductProfile';
 import db from '@/lib/db';
 import getSession from '@/lib/session';
-import { ProductStatus } from '@/lib/utils';
 import {
   ChevronDoubleLeftIcon,
   ChevronLeftIcon,
@@ -20,27 +19,10 @@ async function getUserProduct(id: number) {
       title: true,
       created_at: true,
       photo: true,
-      status: true,
     },
   });
   return userProduct;
 }
-
-// async function getUserProductStatus(id: number, status: string) {
-//   await db.product.findUnique({
-//     where: {
-//       id,
-//       status,
-//     },
-//     select: {
-//       id: true,
-//       price: true,
-//       title: true,
-//       created_at: true,
-//       photo: true,
-//     },
-//   });
-// }
 
 async function getUser(id: number) {
   const user = await db.user.findUnique({
@@ -56,7 +38,7 @@ async function getUser(id: number) {
   return user;
 }
 
-export default async function UserProduct() {
+export default async function MyProducts() {
   const session = await getSession();
   const user = await getUser(session.id!);
   const userProduct = await getUserProduct(session.id!);
@@ -78,7 +60,6 @@ export default async function UserProduct() {
               글쓰기
             </Link>
           </div>
-
           <div className="relative w-16 h-16">
             <Image
               src={`${user?.avatar}/public`}

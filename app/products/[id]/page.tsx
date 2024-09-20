@@ -1,11 +1,12 @@
 import db from '@/lib/db';
 import getSession from '@/lib/session';
-import { formatToWon } from '@/lib/utils';
+import { formatToWon, ProductStatus } from '@/lib/utils';
 import { UserIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { unstable_cache as nextCache, revalidateTag } from 'next/cache';
+import StatusSelector from '@/components/statusSelector';
 
 async function getIsOwner(userId: number) {
   const session = await getSession();
@@ -152,6 +153,10 @@ export default async function ProductDetail({
           </div>
         </div>
         <div className="p-5">
+          <StatusSelector
+            productId={id}
+            initialStatus={product.status as keyof typeof ProductStatus}
+          />
           <h1 className="text-2xl font-semibold">{product.title}</h1>
           <p>{product.description}</p>
         </div>
