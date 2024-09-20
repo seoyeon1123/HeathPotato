@@ -58,3 +58,9 @@ export function formatDate(date: string): string {
   const parsedDate = parseISO(date);
   return isToday(parsedDate) ? formatToTime(date) : formatToDayAndTime(date);
 }
+
+export enum ProductStatus {
+  SALE = '판매중',
+  RESERVED = '예약중',
+  SOLD_OUT = '판매완료',
+}

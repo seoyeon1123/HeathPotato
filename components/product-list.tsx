@@ -5,12 +5,18 @@ import ListProduct from './list-product';
 import { useEffect, useRef, useState } from 'react';
 import { getMoreProducts } from '@/app/(tabs)/home/actions';
 import { revalidateTag } from 'next/cache';
+import { ProductStatus } from '@/lib/utils';
 
 interface ProductListProps {
   initialProducts: InitialProducts;
 }
 export default function ProductList({ initialProducts }: ProductListProps) {
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState(
+    initialProducts.map((product) => ({
+      ...product,
+      status: product.status as keyof typeof ProductStatus, // status를 enum 타입으로 변환
+    }))
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
@@ -26,8 +32,15 @@ export default function ProductList({ initialProducts }: ProductListProps) {
           observer.unobserve(trigger.current);
           setIsLoading(true);
           const newProducts = await getMoreProducts(page + 1);
+
           if (newProducts.length !== 0) {
-            setProducts((prev) => [...prev, ...newProducts]);
+            setProducts((prev) => [
+              ...prev,
+              ...newProducts.map((product) => ({
+                ...product,
+                status: product.status as keyof typeof ProductStatus,
+              })),
+            ]);
             setPage((prev) => prev + 1);
           } else {
             setIsLastPage(true);

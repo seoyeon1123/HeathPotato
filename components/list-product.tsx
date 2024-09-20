@@ -1,4 +1,4 @@
-import { formatToTimeAgo, formatToWon } from '@/lib/utils';
+import { formatToTimeAgo, formatToWon, ProductStatus } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -8,8 +8,10 @@ interface ListProductProps {
   created_at: Date;
   photo: string;
   id: number;
+  status: keyof typeof ProductStatus;
 }
 export default function ListProduct({
+  status,
   title,
   price,
   created_at,
@@ -32,6 +34,7 @@ export default function ListProduct({
         <span className="text-sm text-neutral-500">
           {formatToTimeAgo(created_at.toString())}
         </span>
+        <span>{status}</span>
         <span className="text-lg font-semibold">{formatToWon(price)}원</span>
       </div>
     </Link>
