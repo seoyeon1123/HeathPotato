@@ -1,7 +1,7 @@
 import db from '@/lib/db';
 import getSession from '@/lib/session';
 import { formatToWon, ProductStatus } from '@/lib/utils';
-import { UserIcon } from '@heroicons/react/24/solid';
+import { SunIcon, UserIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
@@ -57,6 +57,7 @@ async function getProductTitle(id: number) {
     },
     select: {
       title: true,
+      status: true,
     },
   });
   return product;
@@ -153,10 +154,19 @@ export default async function ProductDetail({
           </div>
         </div>
         <div className="p-5">
-          <StatusSelector
-            productId={id}
-            initialStatus={product.status as keyof typeof ProductStatus}
-          />
+          {isOwner ? (
+            <StatusSelector
+              productId={id}
+              initialStatus={product.status as keyof typeof ProductStatus}
+            />
+          ) : (
+            <h3
+              className="p-2 w-16 text-sm text-center
+            rounded-full bg-orange-500 text-white mb-4"
+            >
+              {ProductStatus[product.status as keyof typeof ProductStatus]}
+            </h3>
+          )}
           <h1 className="text-2xl font-semibold">{product.title}</h1>
           <p>{product.description}</p>
         </div>
@@ -183,11 +193,15 @@ export default async function ProductDetail({
               수정하기
             </Link>
           ) : null}
-          <form action={createChatRoom}>
-            <button className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold">
-              채팅하기
-            </button>
-          </form>
+          {isOwner ? null : (
+            <>
+              <form action={createChatRoom}>
+                <button className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold">
+                  채팅하기
+                </button>
+              </form>
+            </>
+          )}
         </div>
       </div>
     </>

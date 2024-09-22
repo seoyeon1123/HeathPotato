@@ -27,7 +27,7 @@ export default function StatusSelector({
   };
 
   return (
-    <div className="pb-3">
+    <div className="mb-3">
       <select
         value={status}
         onChange={handleStatusChange}
