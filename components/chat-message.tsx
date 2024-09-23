@@ -44,6 +44,7 @@ interface ChatMessageListProps {
     photo: string;
     price: number;
     id: number;
+    userId: number;
   };
 }
 
@@ -159,10 +160,12 @@ export default function ChatMessagesList({
 
           <div className="flex flex-col gap-1 ">
             <div className="flex flex-row items-start gap-2">
-              <StatusSelector
-                productId={product.id}
-                initialStatus={product.status as keyof typeof ProductStatus}
-              />
+              {userId === product.userId ? (
+                <StatusSelector
+                  productId={product.id}
+                  initialStatus={product.status as keyof typeof ProductStatus}
+                />
+              ) : null}
               <h1 className="text-lg">{product.title}</h1>
             </div>
             <h1>{formatToWon(product.price)}원</h1>

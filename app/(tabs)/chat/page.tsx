@@ -14,67 +14,69 @@ export default async function Chat() {
       <h1 className="text-center text-3xl font-semibold pb-10 border-orange-600">
         🥕당근을 흔들어주세요🥕
       </h1>
-      {chatRooms.map((chatRoom, index) => (
-        <Link
-          key={chatRoom.id}
-          href={`/chats/${chatRoom.id}`}
-          className="block text-white relative"
-        >
-          <div
-            className={`flex items-center mb-4 relative pb-4 ${
-              index !== chatRooms.length - 1
-                ? 'border-b-2 border-neutral-600'
-                : ''
-            }`}
+      {chatRooms
+        .filter((chatRoom) => chatRoom.messages.length > 0) // 메시지가 있는 채팅방만 필터링
+        .map((chatRoom, index) => (
+          <Link
+            key={chatRoom.id}
+            href={`/chats/${chatRoom.id}`}
+            className="block text-white relative"
           >
-            {chatRoom.users
-              .filter((user) => user.id !== session.id)
-              .map((user) => (
-                <div key={user.id} className="flex items-center mb-4">
-                  <div className="flex-shrink-0">
-                    {user.avatar ? (
-                      <Image
-                        src={user.avatar}
-                        alt={user.username}
-                        width={45}
-                        height={45}
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <UserCircleIcon className="w-10 h-10 text-gray-500" />
-                    )}
-                  </div>
-                  <div className="ml-4">
-                    {chatRoom.messages.map((message) => (
-                      <div key={message.created_at.toString()}>
-                        <div className="flex flex-row gap-3">
-                          <div className="text-right">
-                            <span className="block text-sm font-semibold">
-                              {user.username}
+            <div
+              className={`flex items-center mb-4 relative pb-4 ${
+                index !== chatRooms.length - 1
+                  ? 'border-b-2 border-neutral-600'
+                  : ''
+              }`}
+            >
+              {chatRoom.users
+                .filter((user) => user.id !== session.id)
+                .map((user) => (
+                  <div key={user.id} className="flex items-center mb-4">
+                    <div className="flex-shrink-0">
+                      {user.avatar ? (
+                        <Image
+                          src={user.avatar}
+                          alt={user.username}
+                          width={45}
+                          height={45}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <UserCircleIcon className="w-10 h-10 text-gray-500" />
+                      )}
+                    </div>
+                    <div className="ml-4">
+                      {chatRoom.messages.map((message) => (
+                        <div key={message.created_at.toString()}>
+                          <div className="flex flex-row gap-3">
+                            <div className="text-right">
+                              <span className="block text-sm font-semibold">
+                                {user.username}
+                              </span>
+                            </div>
+                            <span>・</span>
+                            <span className="block text-sm font-light text-neutral-300">
+                              {formatToTime(message.created_at.toString())}
                             </span>
                           </div>
-                          <span>・</span>
-                          <span className="block text-sm font-light text-neutral-300">
-                            {formatToTime(message.created_at.toString())}
+                          <span className="block text-lg text-neutral-200">
+                            {message.payload}
                           </span>
                         </div>
-                        <span className="block text-lg text-neutral-200">
-                          {message.payload}
-                        </span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
 
-            {chatRoom.unreadMessagesCount > 0 && (
-              <div className="absolute right-0 bg-orange-600 text-white rounded-full text-xs font-semibold px-3 py-1.5">
-                {chatRoom.unreadMessagesCount}
-              </div>
-            )}
-          </div>
-        </Link>
-      ))}
+              {chatRoom.unreadMessagesCount > 0 && (
+                <div className="absolute right-0 bg-orange-600 text-white rounded-full text-xs font-semibold px-3 py-1.5">
+                  {chatRoom.unreadMessagesCount}
+                </div>
+              )}
+            </div>
+          </Link>
+        ))}
     </div>
   );
 }

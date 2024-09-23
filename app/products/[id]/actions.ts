@@ -20,31 +20,35 @@ export async function UpdateProduct(
   });
 }
 
-export const createRoom = async (id: number, product: IProduct) => {
+export async function createRoom(productId: number, product: IProduct) {
   const session = await getSession();
-  const room = await db.chatRoom.create({
-    data: {
-      users: {
-        connect: [
-          {
-            id: product.userId,
-          },
-          {
-            id: session.id,
-          },
-        ],
-      },
-      product: {
-        connect: { id },
-      },
-    },
 
-    select: {
-      id: true,
+  const existingRoom = await db.chatRoom.findFirst({
+    where: {
+      productId: productId,
+      users: {
+        some: {
+          id: session.id,
+        },
+      },
     },
   });
-  redirect(`/chats/${room.id}`);
-};
+
+  if (existingRoom) {
+    redirect(`/chats/${existingRoom.id}`);
+  }
+
+  const newRoom = await db.chatRoom.create({
+    data: {
+      productId: productId,
+      users: {
+        connect: [{ id: session.id }, { id: product.userId }],
+      },
+    },
+  });
+
+  redirect(`/chats/${newRoom.id}`);
+}
 
 interface IReviewCreate {
   productId: number;

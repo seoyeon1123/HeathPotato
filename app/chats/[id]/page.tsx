@@ -20,6 +20,7 @@ async function getProduct(id: number) {
       photo: true,
       price: true,
       id: true,
+      userId: true,
     },
   });
   return product;
@@ -122,6 +123,7 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
       initialMessages={initialMessages!}
       buyer={buyer}
       product={product!}
+      // productSellerId={product?.userId}
     />
   );
 }

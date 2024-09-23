@@ -1,6 +1,7 @@
 'use client';
 
 import { createRoom } from '@/app/products/[id]/actions';
+import { redirect } from 'next/navigation';
 
 interface IUser {
   username: string;
@@ -24,11 +25,12 @@ export interface IProductProps {
   product: IProduct | null;
 }
 
-export default async function CreateChatRoom({ product }: IProductProps) {
+export default function CreateChatRoom({ product }: IProductProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // 기본 제출 동작 방지
+    e.preventDefault(); // Prevent default form submission
+
     if (product) {
-      await createRoom(product.id, product); // 채팅방 생성 호출
+      await createRoom(product.id, product);
     }
   };
 
