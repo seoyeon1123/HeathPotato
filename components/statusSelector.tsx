@@ -32,7 +32,7 @@ export default function StatusSelector({
         value={status}
         onChange={handleStatusChange}
         defaultValue={initial}
-        className="rounded-full text-black text-sm"
+        className="rounded-full text-black text-sm px-2 py-1 w-20"
       >
         <option value="SALE">{ProductStatus.SALE}</option>
         <option value="RESERVED">{ProductStatus.RESERVED}</option>

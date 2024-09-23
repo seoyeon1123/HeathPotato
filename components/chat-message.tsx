@@ -13,11 +13,16 @@ import {
   formatToDayAndTime,
   formatToTime,
   formatToTimeAgo,
+  formatToWon,
+  ProductStatus,
 } from '@/lib/utils';
-import { ArrowUpCircleIcon } from '@heroicons/react/24/solid';
+import { ArrowUpCircleIcon, ChevronLeftIcon } from '@heroicons/react/24/solid';
 import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import Input from './input';
+import Link from 'next/link';
+import StatusSelector from './statusSelector';
 
 export const SUPABASE_PUBLIC_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBubHh0ZmZxZXNrbnJxdWRudXNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUyNDk5NTMsImV4cCI6MjA0MDgyNTk1M30.hp4xZkxE7HdtqzvoTVskCLGNi1JvaWuScQStzPsPpJk';
@@ -31,6 +36,13 @@ interface ChatMessageListProps {
   username: string;
   avatar: string;
   buyer: string;
+  product: {
+    title: string;
+    status: string;
+    photo: string;
+    price: number;
+    id: number;
+  };
 }
 
 export default function ChatMessagesList({
@@ -40,6 +52,7 @@ export default function ChatMessagesList({
   username,
   avatar,
   buyer,
+  product,
 }: ChatMessageListProps) {
   const [messages, setMessages] = useState(initialMessages);
   const [message, setMessage] = useState('');
@@ -125,9 +138,36 @@ export default function ChatMessagesList({
 
   return (
     <div className="p-5 pt-0 flex flex-col gap-5 min-h-screen justify-end">
-      <div className="border-b-2 border-neutral-700 bg-opacity-50 py-5">
-        <h1 className="text-center text-2xl">{buyer}</h1>
+      <div
+        className="py-5 fixed top-0 left-0 right-0 z-50
+      "
+      >
+        <div className="flex flex-row items-start justify-between border-b-2 border-neutral-700 bg-opacity-50">
+          <Link href={'/chat'}>
+            <ChevronLeftIcon className="size-7 ml-3" />
+          </Link>
+          <h1 className="flex-grow text-center text-2xl pb-5">{buyer}</h1>
+          <div className="w-7" />
+        </div>
+
+        <div className="flex flex-row p-3 gap-3 border-b-2 border-neutral-600">
+          <div className="w-20 h-20 relative">
+            <Image src={`${product.photo}/public`} alt={product.title} fill />
+          </div>
+
+          <div className="flex flex-col gap-1 ">
+            <div className="flex flex-row items-start gap-2">
+              <StatusSelector
+                productId={product.id}
+                initialStatus={product.status as keyof typeof ProductStatus}
+              />
+              <h1 className="text-lg">{product.title}</h1>
+            </div>
+            <h1>{formatToWon(product.price)}원</h1>
+          </div>
+        </div>
       </div>
+
       {messages.map((message) => (
         <div
           key={message.id}

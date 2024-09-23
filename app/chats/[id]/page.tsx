@@ -9,6 +9,22 @@ import {
   revalidateTag,
 } from 'next/cache';
 
+async function getProduct(id: number) {
+  const product = await db.product.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      title: true,
+      status: true,
+      photo: true,
+      price: true,
+      id: true,
+    },
+  });
+  return product;
+}
+
 async function getRoom(id: string) {
   const room = await db.chatRoom.findUnique({
     where: {
@@ -17,6 +33,11 @@ async function getRoom(id: string) {
     include: {
       users: {
         select: { id: true, username: true },
+      },
+      product: {
+        select: {
+          id: true,
+        },
       },
     },
   });
@@ -82,6 +103,8 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
     return notFound();
   }
 
+  const product = await getProduct(room.productId);
+
   const seller = user.username;
 
   const initialMessages = await getCachedMessage(params.id);
@@ -98,6 +121,7 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
       avatar={user.avatar!}
       initialMessages={initialMessages!}
       buyer={buyer}
+      product={product!}
     />
   );
 }

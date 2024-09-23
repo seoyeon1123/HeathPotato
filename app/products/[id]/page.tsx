@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { unstable_cache as nextCache, revalidateTag } from 'next/cache';
 import StatusSelector from '@/components/statusSelector';
+import CreateChatRoom from '@/components/createChatRoom';
 
 async function getIsOwner(userId: number) {
   const session = await getSession();
@@ -101,29 +102,6 @@ export default async function ProductDetail({
     redirect('/home');
   };
 
-  const createChatRoom = async () => {
-    'use server';
-    const session = await getSession();
-    const room = await db.chatRoom.create({
-      data: {
-        users: {
-          connect: [
-            {
-              id: product.userId,
-            },
-            {
-              id: session.id,
-            },
-          ],
-        },
-      },
-      select: {
-        id: true,
-      },
-    });
-    redirect(`/chats/${room.id}`);
-  };
-
   return (
     <>
       <div>
@@ -195,11 +173,7 @@ export default async function ProductDetail({
           ) : null}
           {isOwner ? null : (
             <>
-              <form action={createChatRoom}>
-                <button className="bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold">
-                  채팅하기
-                </button>
-              </form>
+              <CreateChatRoom product={product} />
             </>
           )}
         </div>

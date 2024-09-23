@@ -58,6 +58,8 @@ model Product {
   userId Int
 
   status String @default("SALE")
+  chatRooms ChatRoom[]
+
 
 }
 
@@ -111,6 +113,8 @@ model ChatRoom {
   users User[]
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
+ product Product @relation(fields: [productId], references: [id]) // 일대다 관계로 변경
+  productId Int
   messages   Message[]
 }
 

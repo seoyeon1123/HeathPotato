@@ -1,7 +1,11 @@
 import db from '@/lib/db';
 import getSession from '@/lib/session';
 import { formatToTimeAgo } from '@/lib/utils';
-import { EyeIcon, HandThumbUpIcon } from '@heroicons/react/24/solid';
+import {
+  EyeIcon,
+  HandThumbUpIcon,
+  PencilIcon,
+} from '@heroicons/react/24/solid';
 import { HandThumbUpIcon as OutlineHandThumbUpIcon } from '@heroicons/react/24/outline';
 import { unstable_cache as nextCache, revalidateTag } from 'next/cache';
 import Image from 'next/image';
@@ -9,6 +13,7 @@ import { notFound } from 'next/navigation';
 import LikeButton from '@/components/like-button';
 import CommentForm from '@/components/commentForm';
 import { getComments, getUserId } from './actions';
+import Link from 'next/link';
 
 async function getPost(id: number) {
   try {
@@ -93,20 +98,27 @@ export default async function PostDetail({
   return (
     <div className="p-5 text-white">
       <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2 mb-2">
-          <Image
-            width={28}
-            height={28}
-            className="size-7 rounded-full"
-            src={post.user.avatar!}
-            alt={post.user.username}
-          />
-          <div>
-            <span className="text-sm font-semibold">{post.user.username}</span>
-            <div className="text-xs">
-              <span>{formatToTimeAgo(post.created_at.toString())}</span>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-row items-center gap-2 mb-2">
+            <Image
+              width={28}
+              height={28}
+              className="size-7 rounded-full"
+              src={post.user.avatar!}
+              alt={post.user.username}
+            />
+            <div>
+              <span className="text-sm font-semibold">
+                {post.user.username}
+              </span>
+              <div className="text-xs">
+                <span>{formatToTimeAgo(post.created_at.toString())}</span>
+              </div>
             </div>
           </div>
+          <Link href={`/posts/${id}/edit`}>
+            <PencilIcon className="size-5 text-white" />
+          </Link>
         </div>
         <h2 className="text-lg font-semibold">{post.title}</h2>
         <p className="mb-5">{post.description}</p>
