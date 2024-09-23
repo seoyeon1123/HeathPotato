@@ -23,6 +23,8 @@ import { useEffect, useRef, useState } from 'react';
 import Input from './input';
 import Link from 'next/link';
 import StatusSelector from './statusSelector';
+import Review from './reviewPage';
+import ReviewForm from './reviewForm';
 
 export const SUPABASE_PUBLIC_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBubHh0ZmZxZXNrbnJxdWRudXNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUyNDk5NTMsImV4cCI6MjA0MDgyNTk1M30.hp4xZkxE7HdtqzvoTVskCLGNi1JvaWuScQStzPsPpJk';
@@ -220,6 +222,11 @@ export default function ChatMessagesList({
           </button>
         </form>
       </div>
+      {product.status === 'SOLD_OUT' && (
+        <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+          <ReviewForm product={product} username={username} userId={userId} />
+        </div>
+      )}
     </div>
   );
 }

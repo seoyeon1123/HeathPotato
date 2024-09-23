@@ -33,6 +33,8 @@ model User {
   liveStream LiveStream[]
   liveStreamMessage LiveChatMessage[]
 
+  reviews Review[]
+
 }
 
 model SMSToken {
@@ -60,6 +62,7 @@ model Product {
   status String @default("SALE")
   chatRooms ChatRoom[]
 
+  reviews Review[]
 
 }
 
@@ -107,7 +110,6 @@ model Comment {
 }
 
 //live chat
-
 model ChatRoom {
   id    String @id @default(cuid())
   users User[]
@@ -161,3 +163,15 @@ model LiveChatMessage {
   userId      Int
 }
 
+model Review {
+  id          Int         @id @default(autoincrement())
+  product     Product  @relation(fields: [productId], references: [id])
+  productId Int
+
+  user        User         @relation(fields: [userId], references: [id])
+  userId      Int
+
+  userRating      String                  // 이용자에 대한 평가 (최고에요, 좋아요 등)
+  detailRating String
+  createdAt     DateTime @default(now())
+}

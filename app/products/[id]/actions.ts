@@ -45,3 +45,27 @@ export const createRoom = async (id: number, product: IProduct) => {
   });
   redirect(`/chats/${room.id}`);
 };
+
+interface IReviewCreate {
+  productId: number;
+  userId: number;
+  userRating: string;
+  detailRating: string;
+}
+
+export const ReviewCreate = async ({
+  productId,
+  userId,
+  userRating,
+  detailRating,
+}: IReviewCreate) => {
+  await db.review.create({
+    data: {
+      productId,
+      userId,
+      userRating,
+      detailRating,
+    },
+  });
+  redirect('/home');
+};
