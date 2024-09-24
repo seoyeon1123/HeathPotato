@@ -55,13 +55,13 @@ export default function Live() {
   const getMessageForStatus = () => {
     switch (selectedStatus) {
       case 'connected':
-        return '생방송 중인 스트리밍이 없습니다.';
+        return '현재 운동중인 운동감자가 없습니다.';
       case 'disconnected':
-        return '종료된 스트리밍이 없습니다.';
+        return '종료된 운동감자가 없습니다.';
       case null:
-        return '준비중인 스트리밍이 없습니다.';
+        return '준비중인 운동감자가 없습니다. ';
       default:
-        return '선택된 상태의 스트리밍 상품이 없습니다.';
+        return '선택된 상태의 운동감자가 없습니다.';
     }
   };
 
@@ -73,8 +73,10 @@ export default function Live() {
       <div className="mt-5">
         {loading ? ( // 로딩 중일 때 표시할 UI
           <div className="flex justify-center items-center mt-32 flex-col gap-3">
-            <p className="text-9xl text-white animate-bounce">🥕</p>
-            <p className="text-sm font-semibold">(당근이 열심히 찾는 중..)</p>
+            <p className="text-9xl text-white animate-bounce">
+              <Image src="/health2.png" alt="덤벨" width={120} height={120} />
+            </p>
+            <p className="text-sm font-semibold">(앞사람이 덤벨 사용 중.. )</p>
           </div>
         ) : filteredStreams.length > 0 ? (
           filteredStreams.map((stream) => (
@@ -99,19 +101,19 @@ export default function Live() {
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center text-neutral-400 ">
-                    <ClockIcon className="size-12 text-orange-600" />
+                    <ClockIcon className="size-12 text-red-600" />
                   </div>
                 )}
               </div>
               <div className="ml-4 flex-1">
                 {selectedStatus === null ? (
                   <>
-                    <h2 className="text-xl font-semibold text-orange-400">
+                    <h2 className="text-xl font-semibold text-red-400">
                       {`${stream.title} ⌛️`}
                     </h2>
                   </>
                 ) : (
-                  <h2 className="text-xl font-semibold text-orange-400">
+                  <h2 className="text-xl font-semibold text-red-400">
                     {`${stream.title}`}
                   </h2>
                 )}
@@ -135,14 +137,14 @@ export default function Live() {
           ))
         ) : (
           <div
-            className="text-center font-semibold text-black border-4 border-orange-600 
-          rounded-full flex flex-row items-center
-          justify-center py-3 px-2 mt-32 mx-2 bg-white 
+            className="text-center font-semibold text-white 
+         flex flex-row items-center
+          justify-center py-3 px-2 mt-32 mx-2 bg-neutral-700 gap-2
           "
           >
-            <h1 className="text-3xl">🥕</h1>
+            <h1 className="text-3xl">💪🏻</h1>
             <p className="text-xl">{getMessageForStatus()}</p>
-            <h1 className="text-3xl">🥕</h1>
+            <h1 className="text-3xl">💪🏻</h1>
           </div>
         )}
       </div>
@@ -151,7 +153,7 @@ export default function Live() {
         <Link
           href="/streams/add"
           shallow
-          className="bg-orange-500 flex items-center justify-center rounded-full size-12 fixed bottom-24 right-8 text-white transition-colors hover:bg-orange-400"
+          className="bg-red-500 flex items-center justify-center rounded-full size-12 fixed bottom-24 right-8 text-white transition-colors hover:bg-red-400"
         >
           <PlusIcon className="size-10" />
         </Link>

@@ -2,18 +2,20 @@
 
 import Link from 'next/link';
 import {
-  NewspaperIcon as OutlineNewspaperIcon,
   HomeIcon as OutlineHomeIcon,
+  FireIcon as OutlineFireIcon,
   ChatBubbleOvalLeftEllipsisIcon as OutlineChatIcon,
   VideoCameraIcon as OutlineLiveIcon,
   UserIcon as OutlineUserIcon,
+  UserGroupIcon as OutlineUserGroupIcon,
 } from '@heroicons/react/24/outline';
 import {
-  NewspaperIcon as SolidNewspaperIcon,
+  FireIcon as SolidFireIcon,
   HomeIcon as SolidHomeIcon,
   ChatBubbleOvalLeftEllipsisIcon as SolidChatIcon,
   VideoCameraIcon as SolidLiveIcon,
   UserIcon as SolidUserIcon,
+  UserGroupIcon as SoildUserGroupIcon,
 } from '@heroicons/react/24/solid';
 import { usePathname } from 'next/navigation';
 
@@ -32,11 +34,11 @@ export default function TabBar() {
         </Link>
         <Link href="/life" className="flex flex-col items-center gap-px">
           {pathname === '/life' ? (
-            <SolidNewspaperIcon className="size-7" />
+            <SoildUserGroupIcon className="size-7" />
           ) : (
-            <OutlineNewspaperIcon className="size-7" />
+            <OutlineUserGroupIcon className="size-7" />
           )}
-          <span>동네생활</span>
+          <span>운동감자</span>
         </Link>
         <Link href="/chat" className="flex flex-col items-center gap-px">
           {pathname === '/chat' ? (
@@ -48,11 +50,11 @@ export default function TabBar() {
         </Link>
         <Link href="/live" className="flex flex-col items-center gap-px">
           {pathname === '/live' ? (
-            <SolidLiveIcon className="size-7" />
+            <SolidFireIcon className="size-7" />
           ) : (
-            <OutlineLiveIcon className="size-7" />
+            <OutlineFireIcon className="size-7" />
           )}
-          <span>쇼핑</span>
+          <span>운동중</span>
         </Link>
         <Link href="/profile" className="flex flex-col items-center gap-px">
           {pathname === '/profile' ? (

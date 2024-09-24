@@ -25,6 +25,7 @@ import Link from 'next/link';
 import StatusSelector from './statusSelector';
 import Review from './reviewPage';
 import ReviewForm from './reviewForm';
+import BeforePage from './BeforePage';
 
 export const SUPABASE_PUBLIC_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBubHh0ZmZxZXNrbnJxdWRudXNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUyNDk5NTMsImV4cCI6MjA0MDgyNTk1M30.hp4xZkxE7HdtqzvoTVskCLGNi1JvaWuScQStzPsPpJk';
@@ -147,9 +148,7 @@ export default function ChatMessagesList({
     <div className="p-5 pt-0 flex flex-col gap-5 min-h-screen justify-end">
       <div className="py-5 fixed top-0 left-0 right-0 z-50">
         <div className="flex flex-row items-start justify-between border-b-2 border-neutral-700 bg-opacity-50">
-          <Link href={'/chat'}>
-            <ChevronLeftIcon className="size-7 ml-3" />
-          </Link>
+          <BeforePage />
           <h1 className="flex-grow text-center text-2xl pb-5">{buyer}</h1>
           <div className="w-7" />
         </div>
@@ -197,7 +196,7 @@ export default function ChatMessagesList({
           >
             <span
               className={`${
-                message.userId === userId ? 'bg-neutral-500' : 'bg-orange-500'
+                message.userId === userId ? 'bg-neutral-500' : 'bg-red-500'
               } p-2.5 rounded-md`}
             >
               {message.payload}
@@ -222,7 +221,7 @@ export default function ChatMessagesList({
             placeholder="Write a message..."
           />
           <button className="absolute right-0" onClick={handleMessagesRead}>
-            <ArrowUpCircleIcon className="size-10 text-orange-500 transition-colors hover:text-orange-300" />
+            <ArrowUpCircleIcon className="size-10 text-red-500 transition-colors hover:text-orange-300" />
           </button>
         </form>
       </div>

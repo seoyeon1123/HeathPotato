@@ -27,7 +27,7 @@ async function getPosts() {
 }
 
 export const metadata = {
-  title: '동네생활',
+  title: '운동감자',
 };
 
 export default async function Life() {
@@ -38,7 +38,8 @@ export default async function Life() {
         <Link
           key={post.id}
           href={`/posts/${post.id}`}
-          className="pb-5 mb-5 border-b border-neutral-500 text-neutral-400 flex  flex-col gap-2 last:pb-0 last:border-b-0"
+          className="pb-5 mb-5 border-b border-neutral-500 text-neutral-400 flex flex-col gap-2 last:border-b-0 last:border-none"
+          style={{ borderBottom: 'none !important' }}
         >
           <h2 className="text-white text-lg font-semibold">{post.title}</h2>
           <p>{post.description}</p>
@@ -64,7 +65,7 @@ export default async function Life() {
       <Link
         href="/life/add"
         shallow
-        className="bg-orange-500 flex items-center justify-center rounded-full size-16 fixed bottom-24 right-8 text-white transition-colors hover:bg-orange-400"
+        className="bg-red-500 flex items-center justify-center rounded-full size-16 fixed bottom-24 right-8 text-white transition-colors hover:bg-red-400"
       >
         <PlusIcon className="size-10" />
       </Link>

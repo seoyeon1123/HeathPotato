@@ -111,7 +111,7 @@ export default function ReviewForm({
       <div className="text-center flex flex-col gap-2 mt-4">
         <div className="flex flex-row gap-2 justify-center items-center">
           <h1 className="text-2xl">{username}님, 거래는 어떠셨나요?</h1>
-          <h1 className="animate-bounce">🥕</h1>
+          <h1 className="animate-bounce">🏋🏻‍♂️</h1>
         </div>
         <h1>당신의 거래 이야기를 들려주세요 🫶 </h1>
       </div>
@@ -128,7 +128,7 @@ export default function ReviewForm({
                 name="userRating"
                 value={option}
                 onChange={handleUserRatingChange}
-                className="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300"
+                className="h-4 w-4 text-red-500 focus:ring-red-500 border-gray-300"
               />
               <span className="text-neutral-300">{option}</span>
             </label>
@@ -149,7 +149,7 @@ export default function ReviewForm({
                   name="goodRating"
                   value={option}
                   onChange={handleDetailRatingChange}
-                  className="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300"
+                  className="h-4 w-4 text-red-500 focus:ring-red-500 border-gray-300"
                 />
                 <span className="text-neutral-300">{option}</span>
               </label>
@@ -169,7 +169,7 @@ export default function ReviewForm({
                   name="badRating"
                   value={option}
                   onChange={handleDetailRatingChange}
-                  className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300"
+                  className="h-4 w-4 text-red-500 focus:ring-red-500 border-gray-300"
                 />
                 <span className="text-neutral-300">{option}</span>
               </label>
@@ -179,7 +179,7 @@ export default function ReviewForm({
       ) : null}
 
       <button
-        className="bg-orange-600 w-full rounded-lg h-10"
+        className="bg-red-600 w-full rounded-lg h-10"
         onClick={handleSubmit}
       >
         제출

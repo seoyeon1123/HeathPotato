@@ -37,7 +37,7 @@ export default function ChooseStatus({ onChange }: ChooseStatusProps) {
   return (
     <div className="relative flex flex-col items-start">
       <div
-        className="flex items-center cursor-pointer bg-orange-700 p-2 rounded"
+        className="flex items-center cursor-pointer bg-red-600 p-2 rounded"
         onClick={handleClick}
       >
         <span className="flex-1 text-white">{status}</span>
@@ -48,11 +48,11 @@ export default function ChooseStatus({ onChange }: ChooseStatusProps) {
         )}
       </div>
       {click && (
-        <ul className="absolute top-full mt-1 bg-orange-600 rounded shadow-lg">
+        <ul className="absolute top-full mt-1 bg-red-500 rounded shadow-lg">
           {Object.keys(statusLabels).map((key) => (
             <li
               key={key}
-              className="p-2 hover:bg-orange-700 cursor-pointer"
+              className="p-2 hover:bg-red-700 cursor-pointer"
               onClick={() => handleStatusChange(statusLabels[key])}
             >
               {statusLabels[key]}

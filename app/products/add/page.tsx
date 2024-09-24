@@ -6,6 +6,7 @@ import { PhotoIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { getUploadUrl, uploadProduct } from './actions';
 import { useFormState } from 'react-dom';
+import BeforePage from '@/components/BeforePage';
 
 export default function AddProduct() {
   const [preview, setPreview] = useState('');
@@ -69,6 +70,10 @@ export default function AddProduct() {
   return (
     <div>
       <form className="p-5 flex flex-col gap-5" action={action}>
+        <div className="flex flex-row justify-center items-center">
+          <BeforePage />
+          <h1 className="text-center text-2xl">헬짱의 물품을 판매해주세요. </h1>
+        </div>
         <label
           htmlFor="photo"
           className="border-2 aspect-square flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"

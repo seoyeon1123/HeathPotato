@@ -114,7 +114,7 @@ export default async function Review() {
                   key={key}
                   className="flex flex-row items-center gap-2 text-gray-200"
                 >
-                  <HandThumbUpIcon className="w-6 h-6 text-orange-500" />
+                  <HandThumbUpIcon className="w-6 h-6 text-red-500" />
                   {key} : {count}
                 </p>
               ))}
@@ -127,7 +127,7 @@ export default async function Review() {
                 key={key}
                 className="flex flex-row items-center gap-2 text-gray-200"
               >
-                <HandThumbDownIcon className="w-6 h-6 text-orange-500" />
+                <HandThumbDownIcon className="w-6 h-6 text-red-500" />
                 {key} : {count}
               </p>
             ))}

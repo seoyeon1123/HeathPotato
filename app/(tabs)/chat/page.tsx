@@ -11,9 +11,13 @@ export default async function Chat() {
 
   return (
     <div className="mt-5 p-5 flex flex-col gap-5">
-      <h1 className="text-center text-3xl font-semibold pb-10 border-orange-600">
-        🥕당근을 흔들어주세요🥕
-      </h1>
+      <div className="flex flex-row justify-center items-center pb-10 gap-2">
+        <span className="text-4xl animate-bounce">🏋🏻‍♂️</span>
+        <h1 className="text-center text-3xl font-semibold  border-orange-600">
+          <strong className="text-red-400">덤벨</strong>을 흔들어주세요
+        </h1>
+        <span className="text-4xl animate-bounce"> 🏋🏻‍♂️</span>
+      </div>
       {chatRooms
         .filter((chatRoom) => chatRoom.messages.length > 0) // 메시지가 있는 채팅방만 필터링
         .map((chatRoom, index) => (

@@ -100,9 +100,9 @@ export default async function Profile() {
         href="/profile/review"
         className="flex flex-row justify-center items-stretch gap-2 border-2 border-opacity-30 rounded-xl px-5 py-3"
       >
-        <HandThumbUpIcon className="size-6 text-orange-600" />
+        <HandThumbUpIcon className="size-6 text-red-600" />
         <h1 className="text-lg text-white">내가 받은 리뷰 보러가기</h1>
-        <HandThumbDownIcon className="size-6 text-orange-600" />
+        <HandThumbDownIcon className="size-6 text-red-600" />
       </Link>
 
       <div className=" flex flex-row items-center justify-around border-2 rounded-xl p-3">
