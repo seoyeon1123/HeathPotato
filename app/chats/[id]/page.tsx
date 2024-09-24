@@ -62,6 +62,7 @@ async function getUserProfile() {
     select: {
       username: true,
       avatar: true,
+      id: true,
     },
   });
   return user;
@@ -107,12 +108,15 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
   const product = await getProduct(room.productId);
 
   const seller = user.username;
+  const sellerId = user.id;
 
   const initialMessages = await getCachedMessage(params.id);
   const session = await getSession();
 
   const buyer =
     room.users.filter((user) => user.username !== seller)[0]?.username || '';
+
+  const buyerId = room.users.filter((user) => user.id !== sellerId)[0]?.id || 0;
 
   return (
     <ChatMessageList
@@ -123,6 +127,8 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
       initialMessages={initialMessages!}
       buyer={buyer}
       product={product!}
+      sellerId={sellerId}
+      buyerId={buyerId}
       // productSellerId={product?.userId}
     />
   );

@@ -8,6 +8,7 @@ import { useFormState } from 'react-dom';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import Input from './input';
 import Link from 'next/link';
+import BeforePage from './BeforePage';
 
 interface User {
   user: {
@@ -80,10 +81,8 @@ export default function EditProfile({ user }: User) {
   return (
     <div className="p-5 flex flex-col gap-5">
       <form action={action}>
-        <div className="flex justify-between">
-          <Link href="/profile">
-            <XMarkIcon className="size-7 text-white" />
-          </Link>
+        <div className="flex justify-between items-center">
+          <BeforePage />
           <h3 className="text-2xl font-semibold">프로필 수정</h3>
           <button>완료</button>
         </div>

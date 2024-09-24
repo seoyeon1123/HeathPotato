@@ -1,6 +1,6 @@
 'use client';
 
-import { isToday, parseISO } from 'date-fns';
+import { isToday, parseISO } from 'date-fns'; // isToday와 parseISO 함수 활용
 import {
   unstable_cache as nextCache,
   revalidatePath,
@@ -46,6 +46,8 @@ interface ChatMessageListProps {
     id: number;
     userId: number;
   };
+  sellerId: number;
+  buyerId: number;
 }
 
 export default function ChatMessagesList({
@@ -56,6 +58,8 @@ export default function ChatMessagesList({
   avatar,
   buyer,
   product,
+  sellerId,
+  buyerId,
 }: ChatMessageListProps) {
   const [messages, setMessages] = useState(initialMessages);
   const [message, setMessage] = useState('');
@@ -125,26 +129,23 @@ export default function ChatMessagesList({
     return () => {
       channel.current?.unsubscribe();
 
-      // Handle the async operation separately
       const markAsRead = async () => {
         await markMessagesAsRead(chatRoomId, userId);
       };
 
-      markAsRead(); // Call the async function
+      markAsRead();
     };
   }, []);
 
   useEffect(() => {
-    // Scroll to the bottom of the chat when messages change
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const shouldShowReviewPrompt = product.status === 'SOLD_OUT';
+
   return (
     <div className="p-5 pt-0 flex flex-col gap-5 min-h-screen justify-end">
-      <div
-        className="py-5 fixed top-0 left-0 right-0 z-50
-      "
-      >
+      <div className="py-5 fixed top-0 left-0 right-0 z-50">
         <div className="flex flex-row items-start justify-between border-b-2 border-neutral-700 bg-opacity-50">
           <Link href={'/chat'}>
             <ChevronLeftIcon className="size-7 ml-3" />
@@ -225,9 +226,16 @@ export default function ChatMessagesList({
           </button>
         </form>
       </div>
-      {product.status === 'SOLD_OUT' && (
+
+      {shouldShowReviewPrompt && (
         <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
-          <ReviewForm product={product} username={username} userId={userId} />
+          <ReviewForm
+            product={product}
+            username={username}
+            userId={userId}
+            buyerId={buyerId}
+            sellerId={sellerId}
+          />
         </div>
       )}
     </div>

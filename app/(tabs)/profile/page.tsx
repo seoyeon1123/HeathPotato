@@ -3,15 +3,20 @@ import getSession from '@/lib/session';
 import { formatToTimeAgo } from '@/lib/utils';
 import {
   BellAlertIcon,
-  ClipboardDocumentCheckIcon,
   ClipboardDocumentListIcon,
   FaceFrownIcon,
   PencilSquareIcon,
+  ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
-import { BookmarkIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
+import {
+  ChevronRightIcon,
+  HandThumbUpIcon,
+  HandThumbDownIcon,
+} from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
+import { logOut } from './leave/actions';
 
 async function getUser() {
   const session = await getSession();
@@ -48,12 +53,6 @@ export default async function Profile() {
   const user = await getUser();
   const userProduct = await getUserProduct(user.id);
 
-  const logOut = async () => {
-    'use server';
-    const session = await getSession();
-    session.destroy();
-    redirect('/');
-  };
   return (
     <div className="p-10 flex flex-col gap-8">
       <div className="flex justify-between items-center border-2 border-opacity-30 rounded-xl px-5 py-3">
@@ -97,11 +96,28 @@ export default async function Profile() {
           <h1>나의 라이브</h1>
         </Link>
       </div>
+      <Link
+        href="/profile/review"
+        className="flex flex-row justify-center items-stretch gap-2 border-2 border-opacity-30 rounded-xl px-5 py-3"
+      >
+        <HandThumbUpIcon className="size-6 text-orange-600" />
+        <h1 className="text-lg text-white">내가 받은 리뷰 보러가기</h1>
+        <HandThumbDownIcon className="size-6 text-orange-600" />
+      </Link>
 
-      <form action={logOut} className="flex flex-row gap-2">
-        <FaceFrownIcon className="size-8" />
-        <button>로그아웃</button>
-      </form>
+      <div className=" flex flex-row items-center justify-around border-2 rounded-xl p-3">
+        <form action={logOut} className="flex flex-row gap-3">
+          <FaceFrownIcon className="size-8 *:text-red-500" />
+          <button>로그아웃</button>
+        </form>
+        <Link
+          href={'/profile/leave'}
+          className="flex flex-row items-center gap-3"
+        >
+          <ExclamationTriangleIcon className="size-8 text-red-500" />
+          <h1 className="text-white">탈퇴하기</h1>
+        </Link>
+      </div>
     </div>
   );
 }

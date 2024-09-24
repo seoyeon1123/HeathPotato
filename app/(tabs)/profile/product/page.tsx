@@ -1,3 +1,4 @@
+import BeforePage from '@/components/BeforePage';
 import ProduceProfile from '@/components/ProductProfile';
 import db from '@/lib/db';
 import getSession from '@/lib/session';
@@ -63,12 +64,8 @@ export default async function UserProduct() {
   return (
     <>
       <div className="p-5">
-        <div className="flex items-start gap-3 flex-col ">
-          <Link href="/profile">
-            <ChevronLeftIcon className="w-7 h-7" />
-          </Link>
-        </div>
-        <div className="flex flex-row items-center justify-between border-b-2 border-neutral-600 py-5">
+        <BeforePage />
+        <div className="flex flex-row items-center justify-between border-b-2  border-neutral-600 py-5">
           <div className="flex flex-col gap-3">
             <h1 className="text-xl font-semibold">나의 판매내역</h1>
             <Link

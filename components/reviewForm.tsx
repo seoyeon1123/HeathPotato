@@ -18,14 +18,18 @@ interface IReviewFormProps {
   };
   username: string;
   userId: number; // 사용자 ID를 props로 받아옵니다.
+  buyerId: number;
+  sellerId: number;
 }
 
 export default function ReviewForm({
   product,
   username,
-  userId,
+  userId, //로그인한 userId
+  buyerId,
+  sellerId,
 }: IReviewFormProps) {
-  const userRacting = ['최고에요', '좋아요', '별로에요!'];
+  const userRacting = ['최고에요', '좋아요', '별로에요'];
 
   const goodRacting = [
     '제가 있는 곳까지 와서 거래했어요',
@@ -58,10 +62,14 @@ export default function ReviewForm({
   };
 
   const handleSubmit = async () => {
+    const targetUserId = sellerId === userId ? buyerId : sellerId;
+    console.log('userId:', userId); // 추가된 로그
+    console.log('targetUserId:', targetUserId); // 추가된 로그
+
     try {
       await ReviewCreate({
         productId: product.id,
-        userId: userId,
+        userId: targetUserId,
         userRating: selectedUserRating,
         detailRating: selectedDetailRating,
       });
@@ -70,6 +78,17 @@ export default function ReviewForm({
       console.error('리뷰 제출 중 오류 발생:', error);
     }
   };
+
+  // const otherUser = () => {
+  //   console.log(
+  //     `userId: ${userId}, sellerId: ${sellerId}, buyerIdNum: ${buyerId}`
+  //   );
+  //   if (userId === sellerId) {
+  //     return buyerId;
+  //   } else {
+  //     return sellerId;
+  //   }
+  // };
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 bg-black p-5 shadow-lg flex flex-col gap-3 *:text-white">
@@ -85,6 +104,9 @@ export default function ReviewForm({
           <h2>{formatToWon(product.price)}원</h2>
         </div>
       </div>
+
+      {/* 상대방 ID를 숨겨서 넘김 */}
+      <input type="hidden" value={sellerId === userId ? buyerId : sellerId} />
 
       <div className="text-center flex flex-col gap-2 mt-4">
         <div className="flex flex-row gap-2 justify-center items-center">
