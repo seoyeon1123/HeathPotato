@@ -117,11 +117,11 @@ export default async function ProductDetail({
           <div className="size-10 rounded-full">
             {product.user.avatar !== null ? (
               <Image
-                className="rounded-full"
-                src={product.user.avatar}
+                className="rounded-full aspect-square"
+                src={`${product.user.avatar}/public`}
                 alt={product.title}
-                width={40}
-                height={40}
+                width={45}
+                height={45}
               />
             ) : (
               <UserIcon />

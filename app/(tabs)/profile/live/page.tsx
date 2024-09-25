@@ -41,23 +41,21 @@ export default async function MyLive() {
               스트리밍하기
             </Link>
           </div>
-          <div className="border-b-2 border-neutral-500 border-opacity-40 pb-5 last:border-b-0 pt-4">
+          <div className="border-b-2 border-neutral-500 border-opacity-40 pb-5 last:border-b-0">
             <div>
               {lives.map((live) => (
-                <Link
-                  href={`/streams/${live.id}`}
-                  className="text-white text-lg"
-                  key={live.id}
-                >
-                  {live.title}
-                </Link>
-              ))}
-            </div>
-            <div>
-              {lives.map((live) => (
-                <div key={live.id} className="text-neutral-500">
-                  {live.description}
-                </div>
+                <>
+                  <div className="border-b border-neutral-600 py-4 last:border-b-0">
+                    <Link
+                      href={`/streams/${live.id}`}
+                      className="text-white text-lg"
+                      key={live.id}
+                    >
+                      {live.title}
+                    </Link>
+                    <div className="text-neutral-500">{live.description}</div>
+                  </div>
+                </>
               ))}
             </div>
           </div>

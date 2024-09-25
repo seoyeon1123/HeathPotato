@@ -39,7 +39,7 @@ export default function CommentForm({
         <input name="postId" value={postId} type="hidden" readOnly />
         <input name="userId" value={userId} type="hidden" readOnly />
         <div className="self-end">
-          <button type="submit" className="bg-orange-500 p-2 px-4 rounded-lg">
+          <button type="submit" className="bg-red-500 p-2 px-4 rounded-lg">
             작성하기
           </button>
         </div>

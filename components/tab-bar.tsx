@@ -26,7 +26,7 @@ export default function TabBar() {
       <div className="fixed bottom-0 w-full mx-auto max-w-screen-sm grid grid-cols-5 border-neutral-600 border-t-2 px-5 py-3 *:text-white bg-neutral-800">
         <Link href="/home" className="flex flex-col items-center gap-px">
           {pathname === '/home' ? (
-            <SolidHomeIcon className="size-7" />
+            <SolidHomeIcon className="size-7 text-red-600" />
           ) : (
             <OutlineHomeIcon className="size-7" />
           )}
@@ -34,7 +34,7 @@ export default function TabBar() {
         </Link>
         <Link href="/life" className="flex flex-col items-center gap-px">
           {pathname === '/life' ? (
-            <SoildUserGroupIcon className="size-7" />
+            <SoildUserGroupIcon className="size-7 text-red-600" />
           ) : (
             <OutlineUserGroupIcon className="size-7" />
           )}
@@ -42,7 +42,7 @@ export default function TabBar() {
         </Link>
         <Link href="/chat" className="flex flex-col items-center gap-px">
           {pathname === '/chat' ? (
-            <SolidChatIcon className="size-7" />
+            <SolidChatIcon className="size-7 text-red-600" />
           ) : (
             <OutlineChatIcon className="size-7" />
           )}
@@ -50,7 +50,7 @@ export default function TabBar() {
         </Link>
         <Link href="/live" className="flex flex-col items-center gap-px">
           {pathname === '/live' ? (
-            <SolidFireIcon className="size-7" />
+            <SolidFireIcon className="size-7 text-red-600" />
           ) : (
             <OutlineFireIcon className="size-7" />
           )}
@@ -58,11 +58,11 @@ export default function TabBar() {
         </Link>
         <Link href="/profile" className="flex flex-col items-center gap-px">
           {pathname === '/profile' ? (
-            <SolidUserIcon className="size-7" />
+            <SolidUserIcon className="size-7 text-red-600" />
           ) : (
             <OutlineUserIcon className="size-7" />
           )}
-          <span>나의 당근</span>
+          <span>나의 감자</span>
         </Link>
       </div>
     </>

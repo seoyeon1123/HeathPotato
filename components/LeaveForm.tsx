@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import BeforePage from './BeforePage';
 import DeleteButton from './DeleteUserBtn';
 
@@ -33,8 +34,13 @@ export default function LeaveForm({ user, id }: ILeaveFormProps) {
             <li>현재 계정으로 다시 로그인할 수 없습니다.</li>
           </ul>
         </div>
-        <div className="flex flex-col gap-4">
-          <h1 className="text-center">그래도 계정을 삭제하시겠습니까?</h1>
+        <div className="flex flex-col gap-4 pt-8">
+          <div className="flex flex-row justify-center items-end">
+            <Image src={'/main.png'} alt="운동감자" width={100} height={100} />
+            <h1 className="text-center pb-3 text-lg">
+              운동감자를 그만 두실 건가요?{' '}
+            </h1>
+          </div>
           <DeleteButton userId={id} />
         </div>
       </div>

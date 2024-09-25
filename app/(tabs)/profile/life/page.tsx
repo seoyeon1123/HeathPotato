@@ -42,23 +42,23 @@ export default async function MyPost() {
               글쓰기
             </Link>
           </div>
-          <div className="border-b-2 border-neutral-500 border-opacity-40 pb-5 last:border-b-0 pt-4">
+          <div className="border-b-2 border-neutral-500 border-opacity-40 pb-5 last:border-b-0">
             <div>
               {posts.map((post) => (
-                <Link
-                  href={`/posts/${post.id}`}
-                  key={post.id}
-                  className="text-lg text-white"
-                >
-                  {post.title}
-                </Link>
-              ))}
-            </div>
-            <div>
-              {posts.map((post) => (
-                <div key={post.id} className="text-neutral-500">
-                  {formatDate(post.created_at.toString())}
-                </div>
+                <>
+                  <div className="py-4 border-b border-neutral-600 last:border-b-0">
+                    <Link
+                      href={`/posts/${post.id}`}
+                      key={post.id}
+                      className="text-lg text-white"
+                    >
+                      {post.title}
+                    </Link>
+                    <div key={post.id} className="text-neutral-500">
+                      {formatDate(post.created_at.toString())}
+                    </div>
+                  </div>
+                </>
               ))}
             </div>
           </div>

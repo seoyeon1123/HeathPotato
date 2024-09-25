@@ -39,7 +39,6 @@ export default async function Life() {
           key={post.id}
           href={`/posts/${post.id}`}
           className="pb-5 mb-5 border-b border-neutral-500 text-neutral-400 flex flex-col gap-2 last:border-b-0 last:border-none"
-          style={{ borderBottom: 'none !important' }}
         >
           <h2 className="text-white text-lg font-semibold">{post.title}</h2>
           <p>{post.description}</p>

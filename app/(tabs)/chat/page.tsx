@@ -12,11 +12,11 @@ export default async function Chat() {
   return (
     <div className="mt-5 p-5 flex flex-col gap-5">
       <div className="flex flex-row justify-center items-center pb-10 gap-2">
-        <span className="text-4xl animate-bounce">🏋🏻‍♂️</span>
+        <span className="text-4xl">🏋🏻‍♂️</span>
         <h1 className="text-center text-3xl font-semibold  border-orange-600">
           <strong className="text-red-400">덤벨</strong>을 흔들어주세요
         </h1>
-        <span className="text-4xl animate-bounce"> 🏋🏻‍♂️</span>
+        <span className="text-4xl"> 🏋🏻‍♂️</span>
       </div>
       {chatRooms
         .filter((chatRoom) => chatRoom.messages.length > 0) // 메시지가 있는 채팅방만 필터링
@@ -26,13 +26,7 @@ export default async function Chat() {
             href={`/chats/${chatRoom.id}`}
             className="block text-white relative"
           >
-            <div
-              className={`flex items-center mb-4 relative pb-4 ${
-                index !== chatRooms.length - 1
-                  ? 'border-b-2 border-neutral-600'
-                  : ''
-              }`}
-            >
+            <div className="flex items-center mb-4 relative pb-4 border-b border-neutral-600 last:border-b-0 last:border-none">
               {chatRoom.users
                 .filter((user) => user.id !== session.id)
                 .map((user) => (
@@ -40,7 +34,7 @@ export default async function Chat() {
                     <div className="flex-shrink-0">
                       {user.avatar ? (
                         <Image
-                          src={user.avatar}
+                          src={`${user.avatar}/public`}
                           alt={user.username}
                           width={45}
                           height={45}

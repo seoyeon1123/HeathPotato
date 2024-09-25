@@ -54,15 +54,25 @@ export default async function Profile() {
   const userProduct = await getUserProduct(user.id);
 
   return (
-    <div className="p-10 flex flex-col gap-8">
+    <div className="p-5 flex flex-col gap-8">
+      <div className="flex flex-row items-center gap-2">
+        <Image
+          src="/main.png"
+          alt="운동감자"
+          width={80}
+          height={80}
+          className="pl-2"
+        />
+        <h1 className="text-center text-3xl">나의 운동감자 생활</h1>
+      </div>
       <div className="flex justify-between items-center border-2 border-opacity-30 rounded-xl px-5 py-3">
         <div className="flex flex-row items-center gap-3 rounded-full">
           <Image
             src={`${user.avatar}/public`}
             alt={user.username}
-            width={50}
-            height={50}
-            className="rounded-full object-cover"
+            className="rounded-full object-cover aspect-square"
+            width={60}
+            height={60}
           />
           <h1 className="text-xl">{user.username}</h1>
         </div>

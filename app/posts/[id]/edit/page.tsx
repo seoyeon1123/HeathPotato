@@ -1,3 +1,4 @@
+import BeforePage from '@/components/BeforePage';
 import Button from '@/components/button';
 import EditPostComponent from '@/components/EditPost';
 import Input from '@/components/input';
@@ -32,6 +33,7 @@ export default async function EditPost({ params }: { params: { id: string } }) {
   return (
     <>
       <div className="p-5">
+        <BeforePage />
         <EditPostComponent post={post!} />
       </div>
     </>

@@ -17,8 +17,8 @@ const dongle = Dongle({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Karrot Market',
-    default: 'Karrot Market',
+    template: '%s | 운동감자',
+    default: '운동감자',
   },
   description: 'Sell and buy all the things',
 };

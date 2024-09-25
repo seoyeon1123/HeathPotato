@@ -24,7 +24,7 @@ export default function EditPostComponent({ post }: IPost) {
           <h1 className="text-center text-xl p-2">
             우리 동네 이야기를 다시 작성할게요
           </h1>
-          <GlobeAsiaAustraliaIcon className="size-7 text-orange-600 animate-spin" />
+          <GlobeAsiaAustraliaIcon className="size-7 text-red-600 animate-spin" />
         </div>
         <div className="flex gap-2 flex-col">
           <h1>제목을 입력하세요</h1>

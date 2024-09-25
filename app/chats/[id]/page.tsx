@@ -26,6 +26,19 @@ async function getProduct(id: number) {
   return product;
 }
 
+async function getReview(productId: number) {
+  const review = await db.review.findMany({
+    where: {
+      productId,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  return review;
+}
+
 async function getRoom(id: string) {
   const room = await db.chatRoom.findUnique({
     where: {
@@ -118,6 +131,8 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
 
   const buyerId = room.users.filter((user) => user.id !== sellerId)[0]?.id || 0;
 
+  const review = await getReview(product?.id!);
+
   return (
     <ChatMessageList
       chatRoomId={params.id}
@@ -129,7 +144,7 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
       product={product!}
       sellerId={sellerId}
       buyerId={buyerId}
-      // productSellerId={product?.userId}
+      review={review}
     />
   );
 }

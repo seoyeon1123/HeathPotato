@@ -14,6 +14,7 @@ import LikeButton from '@/components/like-button';
 import CommentForm from '@/components/commentForm';
 import { getComments, getUserId } from './actions';
 import Link from 'next/link';
+import BeforePage from '@/components/BeforePage';
 
 async function getPost(id: number) {
   try {
@@ -98,13 +99,14 @@ export default async function PostDetail({
   return (
     <div className="p-5 text-white">
       <div className="flex flex-col gap-4">
+        <BeforePage />
         <div className="flex items-center justify-between">
           <div className="flex flex-row items-center gap-2 mb-2">
             <Image
-              width={28}
-              height={28}
-              className="size-7 rounded-full"
-              src={post.user.avatar!}
+              width={45}
+              height={45}
+              className="rounded-full aspect-square"
+              src={`${post.user.avatar!}/public`}
               alt={post.user.username}
             />
             <div>
