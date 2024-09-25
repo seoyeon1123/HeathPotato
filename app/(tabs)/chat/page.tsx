@@ -10,13 +10,13 @@ export default async function Chat() {
   const session = await getSession();
 
   return (
-    <div className="mt-5 p-5 flex flex-col gap-5">
-      <div className="flex flex-row justify-center items-center pb-10 gap-2">
-        <span className="text-4xl">🏋🏻‍♂️</span>
+    <div className="p-5 flex flex-col gap-5">
+      <div className="flex flex-row justify-center items-center pb-5 gap-2 border-b border-neutral-600">
+        <Image src={'/health2.png'} alt="덤벨" width={45} height={45} />
         <h1 className="text-center text-3xl font-semibold  border-orange-600">
-          <strong className="text-red-400">덤벨</strong>을 흔들어주세요
+          <strong className="text-yellow-600">덤벨</strong>을 흔들어주세요
         </h1>
-        <span className="text-4xl"> 🏋🏻‍♂️</span>
+        <Image src={'/health2.png'} alt="덤벨" width={45} height={45} />
       </div>
       {chatRooms
         .filter((chatRoom) => chatRoom.messages.length > 0) // 메시지가 있는 채팅방만 필터링

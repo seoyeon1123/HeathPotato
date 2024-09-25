@@ -85,7 +85,7 @@ export default function Live() {
               key={stream.stream_id}
               className="stream-card border-b border-neutral-500
                bg-opacity-90
-              shadow-md p-4 mb-4 pb-6 flex items-center
+              shadow-md  mb-4 pb-6 flex items-center
               hover:cursor-pointer
               last:border-none"
             >
@@ -123,10 +123,10 @@ export default function Live() {
               </div>
               <div className="stream-user flex flex-col items-center ml-4">
                 <Image
-                  src={stream.user.avatar!}
+                  src={`${stream.user.avatar}/public`}
                   alt={stream.user.username}
-                  width={40}
-                  height={40}
+                  width={50}
+                  height={50}
                   className="rounded-full"
                 />
                 <span className="ml-2 text-sm text-white">
@@ -139,12 +139,11 @@ export default function Live() {
           <div
             className="text-center font-semibold text-white 
          flex flex-row items-center
-          justify-center py-3 px-2 mt-32 mx-2 bg-neutral-700 gap-2
+          justify-center py-3 px-2 mt-32 mx-2 bg-neutral-700 gap-2 rounded-xl
           "
           >
-            <h1 className="text-3xl">💪🏻</h1>
-            <p className="text-xl">{getMessageForStatus()}</p>
-            <h1 className="text-3xl">💪🏻</h1>
+            <Image src={'/main.png'} alt="운동감자" width={50} height={50} />
+            <p className="text-md">{getMessageForStatus()}</p>
           </div>
         )}
       </div>

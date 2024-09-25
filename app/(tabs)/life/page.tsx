@@ -34,11 +34,16 @@ export default async function Life() {
   const posts = await getPosts();
   return (
     <div className="p-5 flex flex-col">
+      <div className="border-b border-neutral-600 pb-5">
+        <h1 className="text-center text-3xl ">
+          <strong className="text-yellow-600">운동감자</strong>들의 이야기
+        </h1>
+      </div>
       {posts.map((post) => (
         <Link
           key={post.id}
           href={`/posts/${post.id}`}
-          className="pb-5 mb-5 border-b border-neutral-500 text-neutral-400 flex flex-col gap-2 last:border-b-0 last:border-none"
+          className="pb-10 pt-5 text-neutral-400 flex flex-col gap-2 "
         >
           <h2 className="text-white text-lg font-semibold">{post.title}</h2>
           <p>{post.description}</p>

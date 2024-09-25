@@ -38,7 +38,7 @@ export default function ListProduct({
             </div>
             <div className="flex flex-col *:text-white">
               <div className="flex flex-col gap-2">
-                <span className="text-xl">{title}</span>
+                <span className="text-lg">{title}</span>
                 <span className="text-sm text-neutral-500">
                   {formatToTimeAgo(created_at.toString())}
                 </span>
@@ -49,7 +49,7 @@ export default function ListProduct({
                       {displayedStatus}
                     </span>
                   ) : null}
-                  <span className="text-lg font-semibold">
+                  <span className="text-md font-semibold">
                     {formatToWon(price)}원
                   </span>
                 </div>

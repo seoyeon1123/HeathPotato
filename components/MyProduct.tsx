@@ -19,6 +19,7 @@ async function getUserProduct(id: number) {
       title: true,
       created_at: true,
       photo: true,
+      status: true,
     },
   });
   return userProduct;

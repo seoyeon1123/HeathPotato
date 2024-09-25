@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useFormState } from 'react-dom';
 import AddPost from './actions';
 import BeforePage from '@/components/BeforePage';
+import Image from 'next/image';
 
 export default function AddLife() {
   const [state, action] = useFormState(AddPost, null);
@@ -19,7 +20,7 @@ export default function AddLife() {
             <h1 className="text-center text-xl p-2">
               운동 감자의 이야기를 들려주세요
             </h1>
-            <GlobeAsiaAustraliaIcon className="size-7 text-red-600 animate-spin" />
+            <Image src={'/main.png'} alt="운동" width={50} height={50} />
           </div>
           <div className="flex gap-2 flex-col">
             <h1>제목을 입력하세요</h1>

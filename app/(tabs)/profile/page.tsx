@@ -63,7 +63,9 @@ export default async function Profile() {
           height={80}
           className="pl-2"
         />
-        <h1 className="text-center text-3xl">나의 운동감자 생활</h1>
+        <h1 className="text-center text-3xl">
+          나의 <strong className="text-yellow-600">운동감자</strong> 생활
+        </h1>
       </div>
       <div className="flex justify-between items-center border-2 border-opacity-30 rounded-xl px-5 py-3">
         <div className="flex flex-row items-center gap-3 rounded-full">

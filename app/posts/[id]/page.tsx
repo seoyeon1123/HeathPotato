@@ -70,6 +70,7 @@ async function getLikeStatus(postId: number, userId: number) {
     isLiked: Boolean(isLiked),
   };
 }
+
 async function getCachedLikeStatus(postId: number) {
   const session = await getSession();
   const userId = session.id;

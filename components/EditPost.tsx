@@ -5,6 +5,7 @@ import Input from './input';
 import Button from './button';
 import { useFormState } from 'react-dom';
 import EditPostAction from '@/app/posts/[id]/edit/actions';
+import Image from 'next/image';
 
 interface IPost {
   post: {
@@ -22,9 +23,9 @@ export default function EditPostComponent({ post }: IPost) {
       <form className="flex flex-col gap-4" action={action}>
         <div className="flex flex-row justify-center items-center gap-2 mb-4">
           <h1 className="text-center text-xl p-2">
-            우리 동네 이야기를 다시 작성할게요
+            운동 감자, 다시 작성할게요
           </h1>
-          <GlobeAsiaAustraliaIcon className="size-7 text-red-600 animate-spin" />
+          <Image src={'/main.png'} alt="운동" width={50} height={50} />
         </div>
         <div className="flex gap-2 flex-col">
           <h1>제목을 입력하세요</h1>

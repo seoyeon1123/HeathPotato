@@ -10,12 +10,12 @@ interface IProduct {
   photo: string;
   title: string;
   created_at: Date;
-  price: number; // Assuming you have this field
+  price: number;
   status: string;
 }
 
 interface IProductProfile {
-  userProduct: IProduct[]; // Updated to be an array of products
+  userProduct: IProduct[];
 }
 
 export default function ProduceProfile({ userProduct }: IProductProfile) {
