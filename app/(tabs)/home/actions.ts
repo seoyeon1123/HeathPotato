@@ -13,7 +13,7 @@ export async function getMoreProducts(page: number) {
       status: true,
     },
     skip: page * 1,
-    take: 1,
+
     orderBy: {
       created_at: 'desc',
     },

@@ -24,7 +24,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
   const trigger = useRef<HTMLSpanElement>(null);
 
   const fetchProducts = async () => {
-    const newProducts = await getMoreProducts(0); // 처음 페이지를 다시 가져옴
+    const newProducts = await getMoreProducts(0);
     const updatedProducts = newProducts.map((product) => ({
       ...product,
       status: product.status as keyof typeof ProductStatus, // status 변환
