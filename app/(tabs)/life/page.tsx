@@ -29,7 +29,7 @@ async function getPosts() {
 }
 
 const getCachedPosts = nextCache(getPosts, ['posts'], {
-  tags: ['posts'],
+  tags: ['posts-List'],
 });
 
 export const metadata = {

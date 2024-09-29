@@ -41,7 +41,7 @@ async function getPost(id: number) {
         },
       },
     });
-    revalidateTag('posts');
+    revalidateTag('posts-List');
     return post;
   } catch (e) {
     return null;
