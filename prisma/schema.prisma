@@ -3,9 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
-}
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling -> 데이터 베이스 앞에 그들을 관리하는 누군가가 있다는 것을 의미함. 
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+} 
 
 
 model User {
