@@ -7,6 +7,7 @@ import {
 import { PlusIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { unstable_cache as nextCache, revalidateTag } from 'next/cache';
+import { notFound } from 'next/navigation';
 
 async function getPosts() {
   const posts = await db.post.findMany({
@@ -37,6 +38,10 @@ export const metadata = {
 
 export default async function Life() {
   const posts = await getCachedPosts();
+  if (!posts) {
+    return notFound();
+  }
+
   return (
     <div className="p-5 flex flex-col">
       <div className="border-b border-neutral-600 pb-5">
