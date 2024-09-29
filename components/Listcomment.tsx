@@ -28,12 +28,8 @@ export default function ListComment({ comments }: ListCommentProps) {
           key={comment.id}
           className="relative flex flex-col gap-4 p-4 bg-neutral-800 rounded-lg shadow-md"
         >
-          {/* Delete button positioned in the top-right corner */}
           <div className="absolute top-2 right-2">
-            <DeleteCommentBtn
-              commentId={comment.id}
-              // className="text-neutral-400 hover:text-white transition-colors"
-            />
+            <DeleteCommentBtn commentId={comment.id} />
           </div>
           <div className="flex items-start gap-4">
             <Image

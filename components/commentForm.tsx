@@ -2,7 +2,7 @@
 
 import { useFormState } from 'react-dom';
 import Input from './input';
-import ListComment from './List-comment';
+import ListComment from './Listcomment';
 import CommentAction from '@/app/posts/[id]/actions';
 
 interface ICommentFormProps {
@@ -44,7 +44,7 @@ export default function CommentForm({
           </button>
         </div>
       </form>
-      {/* Pass the comments prop down to ListComment */}
+
       <ListComment comments={comments} />
     </div>
   );
