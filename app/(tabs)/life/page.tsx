@@ -6,6 +6,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { PlusIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
+import { unstable_cache as nextCache, revalidateTag } from 'next/cache';
 
 async function getPosts() {
   const posts = await db.post.findMany({
@@ -26,12 +27,16 @@ async function getPosts() {
   return posts;
 }
 
+const getCachedPosts = nextCache(getPosts, ['posts'], {
+  tags: ['posts'],
+});
+
 export const metadata = {
   title: '운동감자',
 };
 
 export default async function Life() {
-  const posts = await getPosts();
+  const posts = await getCachedPosts();
   return (
     <div className="p-5 flex flex-col">
       <div className="border-b border-neutral-600 pb-5">

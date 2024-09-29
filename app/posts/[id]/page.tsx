@@ -41,6 +41,7 @@ async function getPost(id: number) {
         },
       },
     });
+    revalidateTag('posts');
     return post;
   } catch (e) {
     return null;
@@ -50,8 +51,8 @@ const getCachedPost = nextCache(getPost, ['post-detail'], {
   tags: ['post-detail'],
   revalidate: 60,
 });
+
 async function getLikeStatus(postId: number, userId: number) {
-  // const session = await getSession();
   const isLiked = await db.like.findUnique({
     where: {
       id: {
