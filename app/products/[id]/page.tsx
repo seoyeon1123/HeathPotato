@@ -8,6 +8,7 @@ import { notFound, redirect } from 'next/navigation';
 import { unstable_cache as nextCache, revalidateTag } from 'next/cache';
 import StatusSelector from '@/components/statusSelector';
 import CreateChatRoom from '@/components/createChatRoom';
+import BeforePage from '@/components/BeforePage';
 
 async function getIsOwner(userId: number) {
   const session = await getSession();
@@ -105,7 +106,8 @@ export default async function ProductDetail({
   return (
     <>
       <div>
-        <div className="relative aspect-square">
+        <BeforePage />
+        <div className="relative aspect-square mt-10">
           <Image
             className="object-cover"
             fill

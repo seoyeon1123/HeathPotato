@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/app/products/add/loading';
 import { useFormStatus } from 'react-dom';
 
 interface IButton {
@@ -8,14 +9,17 @@ interface IButton {
 
 export default function Button({ text }: IButton) {
   const { pending } = useFormStatus();
-  //진행상황
 
+  // pending 상태일 때 Loading 컴포넌트만 보여줌
+  if (pending) {
+    return <Loading />;
+  }
   return (
     <button
       disabled={pending}
-      className="primary-btn h-10 disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
+      className="primary-btn h-10 disabled:bg-neutral-400 disabled:text-neutral-300 disabled:cursor-not-allowed"
     >
-      {pending ? '로딩 중...' : text}
+      {text}
     </button>
   );
 }
