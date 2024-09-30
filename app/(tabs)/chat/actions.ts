@@ -33,6 +33,7 @@ export async function getChatRoom() {
     select: {
       id: true,
       created_at: true,
+
       messages: {
         select: {
           payload: true,

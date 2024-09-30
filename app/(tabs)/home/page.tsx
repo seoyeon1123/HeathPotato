@@ -43,7 +43,7 @@ export default async function Products() {
   const initialProducts = await getCachedProducts();
 
   return (
-    <div>
+    <div className="mb-24">
       <ProductList initialProducts={initialProducts} />
 
       <Link

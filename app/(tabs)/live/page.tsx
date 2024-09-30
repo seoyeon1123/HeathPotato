@@ -55,7 +55,7 @@ export default function Live() {
   const getMessageForStatus = () => {
     switch (selectedStatus) {
       case 'connected':
-        return '현재 운동중인 운동감자가 없습니다.';
+        return '운동중인 운동감자가 없습니다.';
       case 'disconnected':
         return '종료된 운동감자가 없습니다.';
       case null:

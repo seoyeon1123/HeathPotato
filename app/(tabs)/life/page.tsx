@@ -43,7 +43,7 @@ export default async function Life() {
   }
 
   return (
-    <div className="p-5 flex flex-col">
+    <div className="p-5 flex flex-col mb-24">
       <div className="border-b border-neutral-600 pb-5">
         <h1 className="text-center text-3xl ">
           <strong className="text-yellow-600">운동감자</strong>들의 이야기
