@@ -103,7 +103,7 @@ export default async function ProductDetail({
 
   return (
     <>
-      <div>
+      <div className="mb-20">
         <BeforePage />
         <div className="relative aspect-square mt-10">
           <Image
