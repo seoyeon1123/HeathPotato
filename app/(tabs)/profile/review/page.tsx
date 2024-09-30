@@ -92,14 +92,14 @@ export default async function Review() {
           <h1 className="text-center text-3xl font-bold text-white">
             나에 대한 평점은 ?
           </h1>
-          <div className="flex flex-row justify-center gap-8 font-semibold text-neutral-600">
-            <p className="bg-green-100 p-2 rounded-full">
+          <div className="flex flex-row justify-center gap-2 font-semibold text-neutral-600 *:text-sm items-center">
+            <p className="bg-green-100 p-2 rounded-full text-sm">
               최고에요: {userRatingCount['최고에요']}
             </p>
-            <p className="bg-yellow-100 p-2 rounded-full">
+            <p className="bg-yellow-100 p-2 rounded-full text-sm">
               좋아요: {userRatingCount['좋아요']}
             </p>
-            <p className="bg-red-100 p-2 rounded-full">
+            <p className="bg-red-100 p-2 rounded-full text-sm">
               별로에요: {userRatingCount['별로에요']}
             </p>
           </div>
