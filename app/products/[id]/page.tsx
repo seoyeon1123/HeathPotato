@@ -19,18 +19,8 @@ async function getIsOwner(userId: number) {
   return false;
 }
 
-// async function getChatRoom () {
-//   const chat = await db.chatRoom.findMany({
-//     where : {
-//       id :
-
-//     }
-//   })
-// }
-
 async function getProduct(id: number) {
-  console.log('product');
-  const product = db.product.findUnique({
+  const product = await db.product.findUnique({
     where: {
       id,
     },
@@ -52,7 +42,6 @@ const getCachedProduct = nextCache(getProduct, ['product-detail'], {
 });
 
 async function getProductTitle(id: number) {
-  console.log('title');
   const product = await db.product.findUnique({
     where: {
       id,
@@ -97,10 +86,19 @@ export default async function ProductDetail({
       where: {
         id,
       },
-      select: null,
     });
     revalidateTag('product-detail');
     redirect('/home');
+  };
+
+  const handleStatusChange = async (newStatus: keyof typeof ProductStatus) => {
+    'use server';
+    await db.product.update({
+      where: { id },
+      data: { status: newStatus },
+    });
+    revalidateTag('product-detail');
+    redirect(`/products/${id}`); // Redirect to the updated product page
   };
 
   return (
@@ -138,6 +136,7 @@ export default async function ProductDetail({
             <StatusSelector
               productId={id}
               initialStatus={product.status as keyof typeof ProductStatus}
+              onStatusChange={handleStatusChange} // here is the implemented function
             />
           ) : (
             <h3

@@ -11,13 +11,13 @@ export async function saveMessage(payload: string, chatRoomId: string) {
       payload,
       chatRoomId,
       userId: session.id!,
-      isRead: false, // 새 메시지는 기본적으로 읽지 않은 상태
+      isRead: false,
     },
     select: {
       id: true,
     },
   });
-  revalidateTag('chat-message');
+  //revalidateTag('chat-message');
 }
 
 export async function markMessagesAsRead(chatRoomId: string, userId: number) {
@@ -33,5 +33,5 @@ export async function markMessagesAsRead(chatRoomId: string, userId: number) {
       isRead: true,
     },
   });
-  revalidateTag('chat-message');
+  //revalidateTag('chat-message');
 }

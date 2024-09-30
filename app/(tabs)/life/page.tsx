@@ -28,8 +28,8 @@ async function getPosts() {
   return posts;
 }
 
-const getCachedPosts = nextCache(getPosts, ['posts'], {
-  tags: ['posts-List'],
+const getCachedPosts = nextCache(getPosts, ['posts-list'], {
+  tags: ['posts-list'],
 });
 
 export const metadata = {

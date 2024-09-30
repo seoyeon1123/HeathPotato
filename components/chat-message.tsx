@@ -1,18 +1,9 @@
 'use client';
-
-import { isToday, parseISO } from 'date-fns'; // isToday와 parseISO 함수 활용
-import {
-  unstable_cache as nextCache,
-  revalidatePath,
-  revalidateTag,
-} from 'next/cache';
 import { InitialChatMessages } from '@/app/chats/[id]/page';
 import { markMessagesAsRead, saveMessage } from '@/app/chats/actions';
 import {
-  formatDate,
   formatToDayAndTime,
   formatToTime,
-  formatToTimeAgo,
   formatToWon,
   ProductStatus,
 } from '@/lib/utils';
@@ -65,35 +56,56 @@ export default function ChatMessagesList({
   const [message, setMessage] = useState('');
   const [newMessageCount, setNewMessageCount] = useState(0);
   const [shouldShowReviewPrompt, setShouldShowReviewPrompt] = useState(
-    product.status === 'SOLD_OUT' && review.length === 0 // 리뷰가 없는 경우에만 보여주기
+    product.status === 'SOLD_OUT' && review.length === 0
   );
   const channel = useRef<RealtimeChannel>();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleReviewSubmit = () => {
-    setShouldShowReviewPrompt(false); // 리뷰 제출 후 리뷰 창 숨기기
+    setShouldShowReviewPrompt(false);
   };
 
+  const handleStatusChange = (newStatus: keyof typeof ProductStatus) => {
+    if (newStatus === 'SOLD_OUT') {
+      setShouldShowReviewPrompt(true);
+    }
+  };
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(event.target.value);
+    const {
+      target: { value },
+    } = event;
+    setMessage(value);
   };
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const newMsg = {
-      id: Date.now(),
-      payload: message,
-      created_at: new Date(),
-      userId,
-      user: {
-        username,
-        avatar,
+    setMessages((prevMsgs) => [
+      ...prevMsgs,
+      {
+        id: Date.now(),
+        payload: message,
+        created_at: new Date(),
+        userId,
+        user: {
+          username: 'string',
+          avatar: 'xxx',
+        },
       },
-    };
-
-    setMessages((prevMsgs) => [...prevMsgs, newMsg]);
-
-    // 메세지 전송 후 리셋
+    ]);
+    channel.current?.send({
+      type: 'broadcast',
+      event: 'message',
+      payload: {
+        id: Date.now(),
+        payload: message,
+        created_at: new Date(),
+        userId,
+        user: {
+          username,
+          avatar,
+        },
+      },
+    });
     await saveMessage(message, chatRoomId);
     setMessage('');
   };
@@ -101,17 +113,23 @@ export default function ChatMessagesList({
   useEffect(() => {
     const client = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY);
     channel.current = client.channel(`room-${chatRoomId}`);
+    channel.current.on('broadcast', { event: 'message' }, (payload) => {
+      console.log(payload);
+      setMessages((prevMsgs) => [...prevMsgs, payload.payload]);
+    });
     channel.current
-      .on('broadcast', { event: 'message' }, (payload) => {
-        setMessages((prevMsgs) => [...prevMsgs, payload.payload]);
+      .on('broadcast', { event: 'status_change' }, (payload) => {
+        if (payload.payload.status === 'SOLD_OUT') {
+          window.location.reload(); // 상태가 SOLD_OUT일 경우 새로고침
+        }
       })
-      .subscribe();
 
+      .subscribe();
     return () => {
       channel.current?.unsubscribe();
       markMessagesAsRead(chatRoomId, userId);
     };
-  }, []);
+  }, [chatRoomId, userId]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -123,10 +141,10 @@ export default function ChatMessagesList({
   return (
     <div className="flex flex-col min-h-screen ">
       {/* 고정된 헤더 */}
-      <div className="py-5 fixed top-0 left-0 right-0 z-50 bg-black">
+      <div className=" fixed top-0 left-0 right-0 z-50 bg-black">
         <div className="flex items-start justify-between border-b-2 border-neutral-700 bg-opacity-5">
           <BeforePage />
-          <h1 className="flex-grow text-center text-2xl pb-5">{buyer}</h1>
+          <h1 className="flex-grow text-center text-2xl py-5">{buyer}</h1>
           <div className="w-7" />
         </div>
         <div className="flex p-3 gap-3 border-b-2 border-neutral-600">
@@ -139,6 +157,7 @@ export default function ChatMessagesList({
                 <StatusSelector
                   productId={product.id}
                   initialStatus={product.status as keyof typeof ProductStatus}
+                  onStatusChange={handleStatusChange} // 변경된 부분
                 />
               ) : null}
               <h1 className="text-lg">{product.title}</h1>
@@ -148,7 +167,6 @@ export default function ChatMessagesList({
         </div>
       </div>
 
-      {/* 메세지 목록 */}
       <div className="p-5 pt-[150px] flex flex-col gap-5 min-h-screen justify-end">
         {messages.map((message) => (
           <div
@@ -189,7 +207,6 @@ export default function ChatMessagesList({
       </div>
       <div ref={messagesEndRef} />
 
-      {/* 리뷰 제출 후에는 리뷰 창 숨기기 */}
       {shouldShowReviewPrompt ? (
         <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
           <ReviewForm
@@ -198,7 +215,7 @@ export default function ChatMessagesList({
             userId={userId}
             buyerId={buyerId}
             sellerId={sellerId}
-            onReviewSubmit={handleReviewSubmit} // 리뷰 제출 핸들러
+            onReviewSubmit={handleReviewSubmit}
           />
         </div>
       ) : (

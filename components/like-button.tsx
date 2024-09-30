@@ -4,6 +4,7 @@ import { HandThumbUpIcon } from '@heroicons/react/24/solid';
 import { HandThumbUpIcon as OutlineHandThumbUpIcon } from '@heroicons/react/24/outline';
 import { useOptimistic } from 'react';
 import { dislikePost, likePost } from '@/app/posts/[id]/actions';
+import { revalidateTag } from 'next/cache';
 
 interface ILikeButtonProps {
   isLiked: boolean;
@@ -30,8 +31,10 @@ export default function LikeButton({
     reduceFn(null);
     if (isLiked) {
       await dislikePost(postId);
+      revalidateTag('posts-list');
     } else {
       await likePost(postId);
+      revalidateTag('posts-list');
     }
   };
 

@@ -68,7 +68,7 @@ export default async function CommentAction(
       },
     });
 
-    revalidateTag('post-detail');
+    revalidateTag('posts-list');
     return { data: newComment };
   }
 }
@@ -93,7 +93,7 @@ export async function getComments(postId: number) {
 }
 
 export async function getUserId() {
-  const session = await getSession(); // Fetch the session on the server-side
+  const session = await getSession();
   const userId = session.id!;
   return userId;
 }

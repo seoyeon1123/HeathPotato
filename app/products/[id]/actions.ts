@@ -5,6 +5,11 @@ import db from '@/lib/db';
 import getSession from '@/lib/session';
 import { ProductStatus } from '@/lib/utils';
 import { redirect } from 'next/navigation';
+import {
+  unstable_cache as nextCache,
+  revalidatePath,
+  revalidateTag,
+} from 'next/cache';
 
 export async function UpdateProduct(
   id: number,

@@ -19,7 +19,7 @@ export default async function Chat() {
         <Image src={'/health2.png'} alt="덤벨" width={45} height={45} />
       </div>
       {chatRooms
-        .filter((chatRoom) => chatRoom.messages.length > 0) // 메시지가 있는 채팅방만 필터링
+        .filter((chatRoom) => chatRoom.messages.length > 0)
         .map((chatRoom, index) => (
           <Link
             key={chatRoom.id}

@@ -1,6 +1,7 @@
 import db from '@/lib/db';
 import { notFound } from 'next/navigation';
 import EditForm from '@/components/EditForm';
+import BeforePage from '@/components/BeforePage';
 
 async function getProduct(id: number) {
   const product = await db.product.findUnique({
@@ -24,5 +25,10 @@ export default async function EditPage({ params }: { params: { id: string } }) {
     return notFound();
   }
 
-  return <EditForm product={product} />;
+  return (
+    <>
+      <BeforePage />
+      <EditForm product={product} />
+    </>
+  );
 }

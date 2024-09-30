@@ -33,7 +33,7 @@ export default function ListComment({ comments }: ListCommentProps) {
           </div>
           <div className="flex items-start gap-4">
             <Image
-              src={comment.user.avatar || '/default-avatar.png'}
+              src={`${comment.user.avatar}/avatar`}
               alt={comment.user.username}
               className="w-10 h-10 rounded-full"
               width={40}

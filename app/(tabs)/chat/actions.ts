@@ -1,5 +1,7 @@
+'use server';
 import db from '@/lib/db';
 import getSession from '@/lib/session';
+import { unstable_cache as nextCache } from 'next/cache';
 
 export async function getUnreadMessagesCount(
   chatRoomId: string,
@@ -49,7 +51,6 @@ export async function getChatRoom() {
     },
   });
 
-      
   const chatRoomsWithUnreadCount = await Promise.all(
     chatRooms.map(async (chatRoom) => {
       const unreadMessagesCount = await getUnreadMessagesCount(
@@ -64,4 +65,16 @@ export async function getChatRoom() {
   );
 
   return chatRoomsWithUnreadCount;
+}
+
+export async function getProductStatus(productId: number) {
+  const productStatus = await db.product.findUnique({
+    where: {
+      id: productId,
+    },
+    select: {
+      status: true,
+    },
+  });
+  return productStatus;
 }

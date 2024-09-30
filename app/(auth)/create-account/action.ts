@@ -33,6 +33,7 @@ const formSchema = z
       .toLowerCase()
 
       .refine((username) => checkUsername(username), 'No potato allowed'),
+    avatar: z.string(),
     email: z
       .string({
         invalid_type_error: 'Email must be a string!',
@@ -87,27 +88,27 @@ const formSchema = z
     path: ['comfirmPassword'],
   });
 
-export async function createAccount(prevState: any, formData: FormData) {
+export async function createAccountAction(prevState: any, formData: FormData) {
   const data = {
+    avatar: formData.get('avatar'),
     username: formData.get('username'),
     email: formData.get('email'),
     password: formData.get('password'),
     comfirmPassword: formData.get('comfirmPassword'),
   };
-  console.log(data);
+
   const result = await formSchema.safeParseAsync(data);
-  console.log(result.error?.flatten());
   if (!result.success) {
     return result.error.flatten();
   } else {
     const hashedPassword = await bcrypt.hash(result.data.password, 12);
-    console.log(hashedPassword);
 
     const user = await db.user.create({
       data: {
         username: result.data.username,
         email: result.data.email,
         password: hashedPassword,
+        avatar: result.data.avatar,
       },
       select: {
         id: true,
@@ -115,9 +116,10 @@ export async function createAccount(prevState: any, formData: FormData) {
     });
 
     const session = await getSession();
-
     session.id = user.id;
-    session.save();
+    await session.save();
+
+    // 리디렉션
     redirect('/profile');
   }
 }

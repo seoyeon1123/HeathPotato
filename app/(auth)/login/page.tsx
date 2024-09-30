@@ -15,21 +15,21 @@ export default function Login() {
     <div className="flex flex-col gap-10 py-8 px-6">
       <div className="flex flex-col gap-2 *:font-medium">
         <h1 className="text-2xl">안녕하세요!</h1>
-        <h2 className="text-xl">Login in with email and passworrd</h2>
+        <h2 className="text-xl">운동감자와 함께 운동할 시간이에요</h2>
       </div>
       <form action={dispatch} className="flex flex-col gap-3">
         <Input
           name="email"
           type="email"
           required
-          placeholder="Email"
+          placeholder="운동감자의 이메일은"
           errors={state?.fieldErrors.email}
         />
         <Input
           name="password"
           type="password"
           required
-          placeholder="Password"
+          placeholder="운동감자의 비밀스런 비밀번호는?"
           minLength={PASSWORD_MIN_LENGTH}
           errors={state?.fieldErrors.password}
         />

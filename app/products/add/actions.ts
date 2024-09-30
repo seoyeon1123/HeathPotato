@@ -39,6 +39,7 @@ export async function uploadProduct(prevState: any, formData: FormData) {
         },
       });
       revalidateTag('products-page');
+
       redirect(`/products/${product.id}`);
     }
   }

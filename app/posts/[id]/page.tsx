@@ -41,7 +41,7 @@ async function getPost(id: number) {
         },
       },
     });
-    revalidateTag('posts-List');
+
     return post;
   } catch (e) {
     return null;
@@ -49,7 +49,6 @@ async function getPost(id: number) {
 }
 const getCachedPost = nextCache(getPost, ['post-detail'], {
   tags: ['post-detail'],
-  revalidate: 60,
 });
 
 async function getLikeStatus(postId: number, userId: number) {
@@ -66,6 +65,7 @@ async function getLikeStatus(postId: number, userId: number) {
       postId,
     },
   });
+
   return {
     likeCount,
     isLiked: Boolean(isLiked),

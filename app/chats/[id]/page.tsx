@@ -57,8 +57,7 @@ async function getRoom(id: string) {
   });
   if (room) {
     const session = await getSession();
-    const canSee = Boolean(room.users.find((user) => user.id === session.id));
-
+    const canSee = Boolean(room.users.find((user) => user.id === session.id!));
     if (!canSee) {
       return null;
     }
@@ -66,23 +65,8 @@ async function getRoom(id: string) {
   return room;
 }
 
-async function getUserProfile() {
-  const session = await getSession();
-  const user = await db.user.findUnique({
-    where: {
-      id: session.id,
-    },
-    select: {
-      username: true,
-      avatar: true,
-      id: true,
-    },
-  });
-  return user;
-}
-
 async function getMessages(chatRoomId: string) {
-  const messge = await db.message.findMany({
+  const messages = await db.message.findMany({
     where: {
       chatRoomId,
     },
@@ -99,14 +83,24 @@ async function getMessages(chatRoomId: string) {
       },
     },
   });
-  return messge;
+  return messages;
 }
-
-const getCachedMessage = nextCache(getMessages, ['chat-message'], {
-  tags: ['chat-message'],
-});
-
 export type InitialChatMessages = Prisma.PromiseReturnType<typeof getMessages>;
+
+async function getUserProfile() {
+  const session = await getSession();
+  const user = await db.user.findUnique({
+    where: {
+      id: session.id,
+    },
+    select: {
+      username: true,
+      avatar: true,
+      id: true,
+    },
+  });
+  return user;
+}
 
 export default async function ChatRoom({ params }: { params: { id: string } }) {
   const room = await getRoom(params.id);
@@ -123,7 +117,7 @@ export default async function ChatRoom({ params }: { params: { id: string } }) {
   const seller = user.username;
   const sellerId = user.id;
 
-  const initialMessages = await getCachedMessage(params.id);
+  const initialMessages = await getMessages(params.id);
   const session = await getSession();
 
   const buyer =
