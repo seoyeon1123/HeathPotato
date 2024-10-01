@@ -27,7 +27,7 @@ export default function AddStream() {
             <Input
               name="title"
               required
-              placeholder="Title of your stream"
+              placeholder="운동 제목을 입력해주세요. "
               className="border-2 border-gray-300 rounded-md p-2 text-black"
               errors={state?.formErrors}
             />
@@ -39,7 +39,7 @@ export default function AddStream() {
             <Input
               name="description"
               required
-              placeholder="Describe your stream"
+              placeholder="예 ) 오늘은 후면 하체 데이"
               className="border-2 border-gray-300 rounded-md p-2  text-black"
               errors={state?.formErrors}
             />

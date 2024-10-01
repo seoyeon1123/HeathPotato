@@ -137,7 +137,7 @@ export default async function StreamDetail({
           <div className="w-10 h-10 overflow-hidden rounded-full">
             {stream.user.avatar ? (
               <Image
-                src={stream.user.avatar}
+                src={`${stream.user.avatar}/avatar`}
                 alt={stream.user.username}
                 width={40}
                 height={40}

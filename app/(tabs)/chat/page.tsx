@@ -44,7 +44,7 @@ export default async function Chat() {
                     <div className="flex-shrink-0">
                       {user.avatar ? (
                         <Image
-                          src={`${user.avatar}/public`}
+                          src={`${user.avatar}/avatar`}
                           alt={user.username}
                           width={45}
                           height={45}

@@ -89,12 +89,12 @@ export default function LiveStreamMessageForm({
           </button>
         )}
         {displayedMessages.map((msg) => (
-          <div key={msg.created_at.toString()} className="flex flex-row gap-3">
+          <div key={msg.created_at.toString()} className="flex flex-row gap-2">
             <Image
-              src={msg.user.avatar! || '/path/to/default/image.png'} // 기본 이미지 설정
+              src={`${msg.user.avatar}/public`} // 기본 이미지 설정
               alt={msg.user.username}
-              width={50}
-              height={50}
+              width={100}
+              height={100}
               className="size-5 rounded-full"
             />
             <h3 className="text-neutral-500">{msg.user.username}</h3>

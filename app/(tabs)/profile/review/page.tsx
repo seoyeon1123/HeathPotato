@@ -41,7 +41,7 @@ export default async function Review() {
     | '불친절해요.'
     | '거래 시간과 장소를 정한 후 연락이 안돼요'
     | '약속 장소에 나타나지 않았어요'
-    | '거래 시간과 장소를 정한 후 거래 직전에 취소했어요';
+    | '시간과 장소를 정한 후 거래 직전에 취소했어요';
 
   const userRatingCount: Record<UserRating, number> = {
     최고에요: 0,
@@ -61,7 +61,7 @@ export default async function Review() {
     '불친절해요.': 0,
     '거래 시간과 장소를 정한 후 연락이 안돼요': 0,
     '약속 장소에 나타나지 않았어요': 0,
-    '거래 시간과 장소를 정한 후 거래 직전에 취소했어요': 0,
+    '시간과 장소를 정한 후 거래 직전에 취소했어요': 0,
   };
 
   reviews.forEach((review) => {
