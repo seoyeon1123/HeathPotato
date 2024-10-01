@@ -42,7 +42,8 @@ export default function RootLayout({
           ${hahmlet.className}
         max-w-screen-sm
         bg-stone-900 
-        text-white mx-auto`}
+        text-white 
+        mx-auto`}
       >
         {children}
       </body>

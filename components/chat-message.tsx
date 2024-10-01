@@ -149,7 +149,12 @@ export default function ChatMessagesList({
         </div>
         <div className="flex p-3 gap-3 border-b-2 border-neutral-600">
           <div className="w-20 h-20 relative">
-            <Image src={`${product.photo}/public`} alt={product.title} fill />
+            <Image
+              src={`${product.photo}/public`}
+              alt={product.title}
+              fill
+              className="aspect-square object-cover"
+            />
           </div>
           <div className="flex flex-col gap-1">
             <div className="flex items-start gap-2">

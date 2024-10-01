@@ -32,14 +32,23 @@ export default function LeaveForm({ user, id }: ILeaveFormProps) {
               복구할 수 없습니다.
             </li>
             <li>현재 계정으로 다시 로그인할 수 없습니다.</li>
+            <li>무엇보다 운동감자를 만날 수 없습니다.</li>
           </ul>
         </div>
         <div className="flex flex-col gap-4 pt-8">
-          <div className="flex flex-row justify-center items-end">
-            <Image src={'/main.png'} alt="운동감자" width={100} height={100} />
-            <h1 className="text-center pb-3 text-lg">
-              운동감자를 그만 두실 건가요?{' '}
-            </h1>
+          <div className="flex flex-row justify-center items-center">
+            <Image
+              src={'/속상한감자.png'}
+              alt="운동감자"
+              width={100}
+              height={100}
+            />
+            <div className="flex flex-col">
+              <h1 className="text-center text-lg">
+                운동감자를 그만 두실 건가요?
+              </h1>
+              <p className="text-sm">우리 같이 감자해요..</p>
+            </div>
           </div>
           <DeleteButton userId={id} />
         </div>
